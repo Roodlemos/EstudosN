@@ -33,6 +33,17 @@ const LandingPage: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [activeSection, setActiveSection] = useState('inicio')
 
+  // Função para scroll suave até o formulário
+  const scrollToForm = () => {
+    const formElement = document.getElementById('formulario-estudo')
+    if (formElement) {
+      formElement.scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'center'
+      })
+    }
+  }
+
   useEffect(() => {
     const handleScroll = () => {
       const sections = ['inicio', 'servicos', 'sobre', 'contato']
@@ -238,6 +249,7 @@ const LandingPage: React.FC = () => {
                 className="flex justify-center"
               >
                 <motion.button 
+                  onClick={scrollToForm}
                   whileHover={{ scale: 1.05, y: -2 }}
                   whileTap={{ scale: 0.95 }}
                   className="bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold py-4 px-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2 backdrop-blur-sm"
@@ -563,6 +575,7 @@ const LandingPage: React.FC = () => {
             </motion.div>
 
             <motion.div
+              id="formulario-estudo"
               initial={{ opacity: 0, x: 50 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
