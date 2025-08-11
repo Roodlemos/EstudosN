@@ -1,0 +1,38 @@
+<svg width="200" height="60" viewBox="0 0 200 60" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#2563eb;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f97316;stop-opacity:1" />
+    </linearGradient>
+    
+    <filter id="logoGlow">
+      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+      <feMerge> 
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Logo Icon -->
+  <g transform="translate(10, 10)">
+    <!-- Lightning bolt -->
+    <path d="M 20 5 L 10 25 L 15 25 L 12 35 L 22 15 L 17 15 Z" fill="url(#logoGradient)" filter="url(#logoGlow)"/>
+    
+    <!-- Circuit lines -->
+    <circle cx="5" cy="15" r="2" fill="#2563eb"/>
+    <circle cx="35" cy="15" r="2" fill="#f97316"/>
+    <line x1="7" y1="15" x2="12" y2="15" stroke="#2563eb" stroke-width="2"/>
+    <line x1="28" y1="15" x2="33" y2="15" stroke="#f97316" stroke-width="2"/>
+    
+    <!-- Connection nodes -->
+    <circle cx="5" cy="25" r="1.5" fill="#2563eb" opacity="0.7"/>
+    <circle cx="35" cy="25" r="1.5" fill="#f97316" opacity="0.7"/>
+    <circle cx="5" cy="5" r="1.5" fill="#2563eb" opacity="0.7"/>
+    <circle cx="35" cy="5" r="1.5" fill="#f97316" opacity="0.7"/>
+  </g>
+  
+  <!-- Company Name -->
+  <text x="60" y="25" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="url(#logoGradient)">NEXO</text>
+  <text x="60" y="42" font-family="Arial, sans-serif" font-size="10" fill="#6b7280">Estudos Elétricos</text>
+</svg>

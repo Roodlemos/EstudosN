@@ -1,0 +1,238 @@
+<svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Gradientes -->
+    <linearGradient id="skyGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#1e3a8a;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#3b82f6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#60a5fa;stop-opacity:1" />
+    </linearGradient>
+    
+    <linearGradient id="mountainGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#374151;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1f2937;stop-opacity:1" />
+    </linearGradient>
+    
+    <linearGradient id="towerGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#6b7280;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#374151;stop-opacity:1" />
+    </linearGradient>
+    
+    <linearGradient id="wireGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#fbbf24;stop-opacity:0.8" />
+      <stop offset="50%" style="stop-color:#f59e0b;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#fbbf24;stop-opacity:0.8" />
+    </linearGradient>
+    
+    <!-- Filtros -->
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge> 
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    
+    <filter id="sparkle">
+      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+      <feMerge> 
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Céu com gradiente -->
+  <rect width="1920" height="1080" fill="url(#skyGradient)"/>
+  
+  <!-- Montanhas de fundo -->
+  <polygon points="0,600 300,400 600,500 900,350 1200,450 1500,300 1920,400 1920,1080 0,1080" 
+           fill="url(#mountainGradient)" opacity="0.7"/>
+  
+  <!-- Montanhas do meio -->
+  <polygon points="0,700 400,500 800,600 1200,450 1600,550 1920,500 1920,1080 0,1080" 
+           fill="url(#mountainGradient)" opacity="0.5"/>
+  
+  <!-- Torres de transmissão -->
+  <!-- Torre 1 -->
+  <g transform="translate(200,400)">
+    <polygon points="0,0 -20,200 -15,200 -5,180 5,180 15,200 20,200" fill="url(#towerGradient)"/>
+    <polygon points="-30,50 30,50 25,60 -25,60" fill="url(#towerGradient)"/>
+    <polygon points="-25,100 25,100 20,110 -20,110" fill="url(#towerGradient)"/>
+    <polygon points="-20,150 20,150 15,160 -15,160" fill="url(#towerGradient)"/>
+    
+    <!-- Isoladores -->
+    <circle cx="-25" cy="55" r="3" fill="#e5e7eb"/>
+    <circle cx="25" cy="55" r="3" fill="#e5e7eb"/>
+    <circle cx="-20" cy="105" r="3" fill="#e5e7eb"/>
+    <circle cx="20" cy="105" r="3" fill="#e5e7eb"/>
+    <circle cx="-15" cy="155" r="3" fill="#e5e7eb"/>
+    <circle cx="15" cy="155" r="3" fill="#e5e7eb"/>
+  </g>
+  
+  <!-- Torre 2 -->
+  <g transform="translate(600,350)">
+    <polygon points="0,0 -20,250 -15,250 -5,230 5,230 15,250 20,250" fill="url(#towerGradient)"/>
+    <polygon points="-30,60 30,60 25,70 -25,70" fill="url(#towerGradient)"/>
+    <polygon points="-25,120 25,120 20,130 -20,130" fill="url(#towerGradient)"/>
+    <polygon points="-20,180 20,180 15,190 -15,190" fill="url(#towerGradient)"/>
+    
+    <!-- Isoladores -->
+    <circle cx="-25" cy="65" r="3" fill="#e5e7eb"/>
+    <circle cx="25" cy="65" r="3" fill="#e5e7eb"/>
+    <circle cx="-20" cy="125" r="3" fill="#e5e7eb"/>
+    <circle cx="20" cy="125" r="3" fill="#e5e7eb"/>
+    <circle cx="-15" cy="185" r="3" fill="#e5e7eb"/>
+    <circle cx="15" cy="185" r="3" fill="#e5e7eb"/>
+  </g>
+  
+  <!-- Torre 3 -->
+  <g transform="translate(1000,380)">
+    <polygon points="0,0 -20,220 -15,220 -5,200 5,200 15,220 20,220" fill="url(#towerGradient)"/>
+    <polygon points="-30,55 30,55 25,65 -25,65" fill="url(#towerGradient)"/>
+    <polygon points="-25,110 25,110 20,120 -20,120" fill="url(#towerGradient)"/>
+    <polygon points="-20,165 20,165 15,175 -15,175" fill="url(#towerGradient)"/>
+    
+    <!-- Isoladores -->
+    <circle cx="-25" cy="60" r="3" fill="#e5e7eb"/>
+    <circle cx="25" cy="60" r="3" fill="#e5e7eb"/>
+    <circle cx="-20" cy="115" r="3" fill="#e5e7eb"/>
+    <circle cx="20" cy="115" r="3" fill="#e5e7eb"/>
+    <circle cx="-15" cy="170" r="3" fill="#e5e7eb"/>
+    <circle cx="15" cy="170" r="3" fill="#e5e7eb"/>
+  </g>
+  
+  <!-- Torre 4 -->
+  <g transform="translate(1400,320)">
+    <polygon points="0,0 -20,280 -15,280 -5,260 5,260 15,280 20,280" fill="url(#towerGradient)"/>
+    <polygon points="-30,70 30,70 25,80 -25,80" fill="url(#towerGradient)"/>
+    <polygon points="-25,140 25,140 20,150 -20,150" fill="url(#towerGradient)"/>
+    <polygon points="-20,210 20,210 15,220 -15,220" fill="url(#towerGradient)"/>
+    
+    <!-- Isoladores -->
+    <circle cx="-25" cy="75" r="3" fill="#e5e7eb"/>
+    <circle cx="25" cy="75" r="3" fill="#e5e7eb"/>
+    <circle cx="-20" cy="145" r="3" fill="#e5e7eb"/>
+    <circle cx="20" cy="145" r="3" fill="#e5e7eb"/>
+    <circle cx="-15" cy="215" r="3" fill="#e5e7eb"/>
+    <circle cx="15" cy="215" r="3" fill="#e5e7eb"/>
+  </g>
+  
+  <!-- Cabos de transmissão -->
+  <!-- Linha superior -->
+  <path d="M 175 455 Q 400 465 575 415 Q 800 425 975 435 Q 1200 445 1375 395" 
+        stroke="url(#wireGradient)" stroke-width="2" fill="none" filter="url(#glow)">
+    <animate attributeName="stroke-opacity" values="0.6;1;0.6" dur="3s" repeatCount="indefinite"/>
+  </path>
+  
+  <path d="M 225 455 Q 450 465 625 415 Q 850 425 1025 435 Q 1250 445 1425 395" 
+        stroke="url(#wireGradient)" stroke-width="2" fill="none" filter="url(#glow)">
+    <animate attributeName="stroke-opacity" values="1;0.6;1" dur="3s" repeatCount="indefinite"/>
+  </path>
+  
+  <!-- Linha do meio -->
+  <path d="M 175 505 Q 400 515 575 465 Q 800 475 975 485 Q 1200 495 1375 445" 
+        stroke="url(#wireGradient)" stroke-width="2" fill="none" filter="url(#glow)">
+    <animate attributeName="stroke-opacity" values="0.8;1;0.8" dur="4s" repeatCount="indefinite"/>
+  </path>
+  
+  <path d="M 225 505 Q 450 515 625 465 Q 850 475 1025 485 Q 1250 495 1425 445" 
+        stroke="url(#wireGradient)" stroke-width="2" fill="none" filter="url(#glow)">
+    <animate attributeName="stroke-opacity" values="1;0.8;1" dur="4s" repeatCount="indefinite"/>
+  </path>
+  
+  <!-- Linha inferior -->
+  <path d="M 175 555 Q 400 565 575 515 Q 800 525 975 535 Q 1200 545 1375 495" 
+        stroke="url(#wireGradient)" stroke-width="2" fill="none" filter="url(#glow)">
+    <animate attributeName="stroke-opacity" values="0.7;1;0.7" dur="5s" repeatCount="indefinite"/>
+  </path>
+  
+  <path d="M 225 555 Q 450 565 625 515 Q 850 525 1025 535 Q 1250 545 1425 495" 
+        stroke="url(#wireGradient)" stroke-width="2" fill="none" filter="url(#glow)">
+    <animate attributeName="stroke-opacity" values="1;0.7;1" dur="5s" repeatCount="indefinite"/>
+  </path>
+  
+  <!-- Subestação -->
+  <g transform="translate(1600,500)">
+    <!-- Estrutura principal -->
+    <rect x="0" y="0" width="200" height="100" fill="url(#towerGradient)" opacity="0.8"/>
+    <rect x="10" y="10" width="180" height="80" fill="none" stroke="#9ca3af" stroke-width="2"/>
+    
+    <!-- Equipamentos -->
+    <rect x="20" y="20" width="30" height="60" fill="#6b7280"/>
+    <rect x="60" y="25" width="25" height="50" fill="#6b7280"/>
+    <rect x="95" y="20" width="35" height="60" fill="#6b7280"/>
+    <rect x="140" y="25" width="25" height="50" fill="#6b7280"/>
+    <rect x="175" y="20" width="15" height="60" fill="#6b7280"/>
+    
+    <!-- Luzes indicadoras -->
+    <circle cx="35" cy="15" r="3" fill="#ef4444" filter="url(#sparkle)">
+      <animate attributeName="opacity" values="0.3;1;0.3" dur="2s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="72" cy="15" r="3" fill="#22c55e" filter="url(#sparkle)">
+      <animate attributeName="opacity" values="1;0.3;1" dur="2.5s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="112" cy="15" r="3" fill="#3b82f6" filter="url(#sparkle)">
+      <animate attributeName="opacity" values="0.5;1;0.5" dur="1.8s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="152" cy="15" r="3" fill="#f59e0b" filter="url(#sparkle)">
+      <animate attributeName="opacity" values="1;0.5;1" dur="3s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+  
+  <!-- Partículas de energia flutuantes -->
+  <g>
+    <circle cx="300" cy="200" r="2" fill="#fbbf24" filter="url(#sparkle)">
+      <animateTransform attributeName="transform" type="translate" 
+                        values="0,0; 50,-20; 100,10; 150,-30; 200,0" 
+                        dur="8s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0;1;0.5;1;0" dur="8s" repeatCount="indefinite"/>
+    </circle>
+    
+    <circle cx="700" cy="150" r="1.5" fill="#60a5fa" filter="url(#sparkle)">
+      <animateTransform attributeName="transform" type="translate" 
+                        values="0,0; -30,40; -60,-10; -90,30; -120,0" 
+                        dur="10s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0;0.8;1;0.3;0" dur="10s" repeatCount="indefinite"/>
+    </circle>
+    
+    <circle cx="1100" cy="180" r="2.5" fill="#34d399" filter="url(#sparkle)">
+      <animateTransform attributeName="transform" type="translate" 
+                        values="0,0; 80,30; 160,-20; 240,40; 320,0" 
+                        dur="12s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0;1;0.7;1;0" dur="12s" repeatCount="indefinite"/>
+    </circle>
+    
+    <circle cx="1500" cy="120" r="1.8" fill="#f472b6" filter="url(#sparkle)">
+      <animateTransform attributeName="transform" type="translate" 
+                        values="0,0; -40,-30; -80,20; -120,-40; -160,0" 
+                        dur="9s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0;0.9;1;0.4;0" dur="9s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+  
+  <!-- Efeito de raios elétricos -->
+  <g opacity="0.6">
+    <path d="M 200 450 L 210 440 L 205 445 L 215 435 L 208 442 L 220 430" 
+          stroke="#fbbf24" stroke-width="1" fill="none" filter="url(#glow)">
+      <animate attributeName="opacity" values="0;1;0" dur="0.3s" repeatCount="indefinite" begin="0s"/>
+    </path>
+    
+    <path d="M 600 410 L 610 400 L 605 405 L 615 395 L 608 402 L 620 390" 
+          stroke="#60a5fa" stroke-width="1" fill="none" filter="url(#glow)">
+      <animate attributeName="opacity" values="0;1;0" dur="0.4s" repeatCount="indefinite" begin="1s"/>
+    </path>
+    
+    <path d="M 1000 430 L 1010 420 L 1005 425 L 1015 415 L 1008 422 L 1020 410" 
+          stroke="#34d399" stroke-width="1" fill="none" filter="url(#glow)">
+      <animate attributeName="opacity" values="0;1;0" dur="0.2s" repeatCount="indefinite" begin="2s"/>
+    </path>
+    
+    <path d="M 1400 380 L 1410 370 L 1405 375 L 1415 365 L 1408 372 L 1420 360" 
+          stroke="#f472b6" stroke-width="1" fill="none" filter="url(#glow)">
+      <animate attributeName="opacity" values="0;1;0" dur="0.5s" repeatCount="indefinite" begin="0.5s"/>
+    </path>
+  </g>
+  
+  <!-- Overlay de atmosfera -->
+  <rect width="1920" height="1080" fill="url(#skyGradient)" opacity="0.1"/>
+</svg>

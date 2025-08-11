@@ -1,0 +1,38 @@
+<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="analysisGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f59e0b;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#d97706;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Chart background -->
+  <rect x="8" y="12" width="48" height="40" rx="4" fill="white" stroke="url(#analysisGradient)" stroke-width="2"/>
+  
+  <!-- Grid lines -->
+  <line x1="8" y1="22" x2="56" y2="22" stroke="#e5e7eb" stroke-width="1"/>
+  <line x1="8" y1="32" x2="56" y2="32" stroke="#e5e7eb" stroke-width="1"/>
+  <line x1="8" y1="42" x2="56" y2="42" stroke="#e5e7eb" stroke-width="1"/>
+  <line x1="18" y1="12" x2="18" y2="52" stroke="#e5e7eb" stroke-width="1"/>
+  <line x1="28" y1="12" x2="28" y2="52" stroke="#e5e7eb" stroke-width="1"/>
+  <line x1="38" y1="12" x2="38" y2="52" stroke="#e5e7eb" stroke-width="1"/>
+  <line x1="48" y1="12" x2="48" y2="52" stroke="#e5e7eb" stroke-width="1"/>
+  
+  <!-- Power wave -->
+  <path d="M 8 32 Q 18 22 28 32 T 48 32 T 56 32" fill="none" stroke="url(#analysisGradient)" stroke-width="3"/>
+  
+  <!-- Data points -->
+  <circle cx="18" cy="28" r="3" fill="url(#analysisGradient)"/>
+  <circle cx="28" cy="36" r="3" fill="url(#analysisGradient)"/>
+  <circle cx="38" cy="24" r="3" fill="url(#analysisGradient)"/>
+  <circle cx="48" cy="40" r="3" fill="url(#analysisGradient)"/>
+  
+  <!-- Lightning symbol -->
+  <g transform="translate(32, 58)">
+    <path d="M -4 -2 L -2 -6 L 2 -6 L 0 -2 L 2 2 L -2 2 Z" fill="url(#analysisGradient)"/>
+  </g>
+  
+  <!-- Measurement indicators -->
+  <text x="12" y="8" font-family="Arial" font-size="8" fill="url(#analysisGradient)">kW</text>
+  <text x="52" y="60" font-family="Arial" font-size="8" fill="url(#analysisGradient)">t</text>
+</svg>

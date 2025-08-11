@@ -1,0 +1,27 @@
+<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="protectionGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#10b981;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#059669;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Shield outline -->
+  <path d="M 32 8 L 48 16 L 48 36 C 48 44 40 52 32 56 C 24 52 16 44 16 36 L 16 16 Z" fill="url(#protectionGradient)" opacity="0.2"/>
+  <path d="M 32 8 L 48 16 L 48 36 C 48 44 40 52 32 56 C 24 52 16 44 16 36 L 16 16 Z" fill="none" stroke="url(#protectionGradient)" stroke-width="3"/>
+  
+  <!-- Checkmark -->
+  <polyline points="24,32 30,38 42,26" fill="none" stroke="url(#protectionGradient)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <!-- Circuit elements -->
+  <circle cx="20" cy="20" r="2" fill="url(#protectionGradient)"/>
+  <circle cx="44" cy="20" r="2" fill="url(#protectionGradient)"/>
+  <circle cx="20" cy="44" r="2" fill="url(#protectionGradient)"/>
+  <circle cx="44" cy="44" r="2" fill="url(#protectionGradient)"/>
+  
+  <!-- Connection lines -->
+  <line x1="22" y1="20" x2="28" y2="20" stroke="url(#protectionGradient)" stroke-width="1.5"/>
+  <line x1="36" y1="20" x2="42" y2="20" stroke="url(#protectionGradient)" stroke-width="1.5"/>
+  <line x1="20" y1="22" x2="20" y2="28" stroke="url(#protectionGradient)" stroke-width="1.5"/>
+  <line x1="44" y1="22" x2="44" y2="28" stroke="url(#protectionGradient)" stroke-width="1.5"/>
+</svg>
