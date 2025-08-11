@@ -15,14 +15,10 @@ import {
   Activity,
   Zap,
   Database,
-  Eye,
-  AlertTriangle,
   ChevronRight,
   Filter,
-  Download,
   MapPin,
-  Clock,
-  CheckCircle
+  Clock
 } from 'lucide-react';
 
 const Dashboard: React.FC = () => {

@@ -86,7 +86,7 @@ const AssetLoader: React.FC<AssetLoaderProps> = ({ children, showProgress = true
         </motion.div>
 
         {/* Debug Info (only in development) */}
-        {process.env.NODE_ENV === 'development' && (
+        {false && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}

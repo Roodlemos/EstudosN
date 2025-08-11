@@ -9,27 +9,24 @@ import {
   Phone, 
   Mail, 
   MapPin,
-  CheckCircle,
   ArrowRight,
   Menu,
   X,
   Eye,
   Heart,
-  FileText,
   Database,
-  AlertTriangle,
-  TrendingUp,
-  Shield,
   Clock,
   Globe,
   Lightbulb,
-  Settings,
-  BarChart3
+  Settings
 } from 'lucide-react'
-import { svgs, icons, videos } from '../assets';
+import { svgs } from '../assets';
 import ElectricalPanorama from './ElectricalPanorama';
+import LanguageSelector from './LanguageSelector';
+import { useLanguage } from '../context/LanguageContext';
 
 const LandingPage: React.FC = () => {
+  const { t } = useLanguage();
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [activeSection, setActiveSection] = useState('inicio')
 
@@ -71,8 +68,7 @@ const LandingPage: React.FC = () => {
 
   const fadeInUp = {
     initial: { opacity: 0, y: 60 },
-    animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.8, ease: "easeOut" }
+    animate: { opacity: 1, y: 0 }
   }
 
   const staggerContainer = {
@@ -117,10 +113,10 @@ const LandingPage: React.FC = () => {
             {/* Desktop Navigation */}
             <nav className="hidden lg:flex space-x-8">
               {[
-                { name: 'Início', href: '#inicio' },
-                { name: 'Serviços', href: '#servicos' },
-                { name: 'Sobre', href: '#sobre' },
-                { name: 'Contato', href: '#contato' }
+                { name: t.nav.home, href: '#inicio' },
+                { name: t.nav.services, href: '#servicos' },
+                { name: t.nav.about, href: '#sobre' },
+                { name: t.nav.contact, href: '#contato' }
               ].map((item) => (
                 <motion.a
                   key={item.name}
@@ -139,6 +135,7 @@ const LandingPage: React.FC = () => {
             </nav>
 
             <div className="hidden lg:flex items-center space-x-4">
+              <LanguageSelector />
               <Link to="/login">
                 <motion.button 
                   whileHover={{ scale: 1.05, y: -2 }}
@@ -174,10 +171,10 @@ const LandingPage: React.FC = () => {
               }`}
             >
               {[
-                { name: 'Início', href: '#inicio' },
-                { name: 'Serviços', href: '#servicos' },
-                { name: 'Sobre', href: '#sobre' },
-                { name: 'Contato', href: '#contato' }
+                { name: t.nav.home, href: '#inicio' },
+                { name: t.nav.services, href: '#servicos' },
+                { name: t.nav.about, href: '#sobre' },
+                { name: t.nav.contact, href: '#contato' }
               ].map((item) => (
                 <a
                   key={item.name}
@@ -192,6 +189,9 @@ const LandingPage: React.FC = () => {
                   {item.name}
                 </a>
               ))}
+              <div className="mt-4 pt-4 border-t border-white/20">
+                <LanguageSelector />
+              </div>
               <Link to="/login" className="block mt-4">
                 <button className="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold py-3 px-6 rounded-xl">
                   Portal Admin
@@ -231,16 +231,15 @@ const LandingPage: React.FC = () => {
                 </div>
                 
                 <h1 className="text-5xl lg:text-7xl font-bold leading-tight">
-                  <span className="text-white">Estudos Elétricos</span>
+                  <span className="text-white">{t.hero.title}</span>
                   <br />
                   <span className="bg-gradient-to-r from-blue-400 to-orange-400 bg-clip-text text-transparent">
-                    de Excelência
+                    {t.hero.subtitle}
                   </span>
                 </h1>
                 
                 <p className="text-xl text-white/90 leading-relaxed max-w-3xl mx-auto">
-                  Somos uma consultoria brasileira especializada no Sistema Interligado Nacional, 
-                  oferecendo estudos elétricos com viés prático, customizados e tecnicamente consistentes.
+                  {t.hero.description}
                 </p>
               </motion.div>
               
@@ -254,7 +253,7 @@ const LandingPage: React.FC = () => {
                   whileTap={{ scale: 0.95 }}
                   className="bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold py-4 px-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2 backdrop-blur-sm"
                 >
-                  Solicitar Estudo
+                  {t.hero.requestStudyBtn}
                   <ArrowRight size={20} />
                 </motion.button>
               </motion.div>
@@ -274,12 +273,12 @@ const LandingPage: React.FC = () => {
           >
             <div className="inline-flex items-center gap-2 bg-blue-100 text-blue-700 px-4 py-2 rounded-full text-sm font-medium mb-6">
               <Settings className="w-4 h-4" />
-              Nossos Serviços
+              {t.services.badge}
             </div>
             <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
-              Soluções Completas em
+              {t.services.title}
               <span className="block bg-gradient-to-r from-blue-600 to-orange-500 bg-clip-text text-transparent">
-                Estudos Elétricos
+                {t.services.subtitle}
               </span>
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
@@ -295,48 +294,30 @@ const LandingPage: React.FC = () => {
           >
             {[
               {
-                title: 'Estudos para Projetos Básicos',
-                description: 'Estudos associados ao Projeto Básico de Empreendimentos da Rede Básica, solicitados pelo ONS',
-                iconSvg: icons.electricalStudies,
-                color: 'from-blue-500 to-blue-600',
-                features: ['Projeto Básico', 'Rede Básica', 'Solicitações ONS']
-              },
-              {
-                title: 'Estudos de Acesso',
-                description: 'Estudos necessários para a emissão de Parecer de Acesso para integração à Rede Básica',
-                iconSvg: icons.powerAnalysis,
-                color: 'from-green-500 to-green-600',
-                features: ['Parecer de Acesso', 'Geração Renovável', 'Integração SIN']
-              },
-              {
-                title: 'Estudos Pré-operacionais',
-                description: 'Estudos para a integração de instalações à Rede Básica, na fase pré-operacional',
-                icon: Clock,
-                color: 'from-purple-500 to-purple-600',
-                features: ['Integração Rede Básica', 'Fase pré-operacional', 'Comissionamento']
-              },
-              {
-                title: 'Estudos para Relatórios R2',
-                description: 'Estudos necessários para a emissão dos relatórios técnicos referentes às novas instalações',
-                icon: Database,
-                color: 'from-orange-500 to-orange-600',
-                features: ['Relatório R2', 'Alternativa de referência', 'Novas instalações']
-              },
-              {
-                title: 'Cadastramento SGBDIT',
-                description: 'Cadastramento dos equipamentos de pátio e sistemas de proteção nas bases do ONS',
-                iconSvg: icons.protectionSystems,
-                color: 'from-red-500 to-red-600',
-                features: ['Equipamentos de pátio', 'Sistemas de proteção', 'Base ONS']
-              },
-              {
-                title: 'Modelagem de Usinas Renováveis',
-                description: 'Modelagem de usinas renováveis para estudos de transitórios eletromagnéticos',
+                title: t.services.items.renewable.title,
+                description: t.services.items.renewable.description,
                 icon: Zap,
-                color: 'from-yellow-500 to-yellow-600',
-                features: ['Transitórios eletromagnéticos', 'Controle centralizado', 'Inversores']
+                color: 'from-blue-500 to-blue-600'
+              },
+              {
+                title: t.services.items.transmission.title,
+                description: t.services.items.transmission.description,
+                icon: Settings,
+                color: 'from-green-500 to-green-600'
+              },
+              {
+                title: t.services.items.distribution.title,
+                description: t.services.items.distribution.description,
+                icon: Clock,
+                color: 'from-purple-500 to-purple-600'
+              },
+              {
+                title: t.services.items.consulting.title,
+                description: t.services.items.consulting.description,
+                icon: Database,
+                color: 'from-orange-500 to-orange-600'
               }
-            ].map((service, index) => (
+            ].map((service) => (
               <motion.div
                 key={service.title}
                 variants={fadeInUp}
@@ -344,11 +325,7 @@ const LandingPage: React.FC = () => {
                 className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100"
               >
                 <div className={`w-16 h-16 bg-gradient-to-r ${service.color} rounded-2xl flex items-center justify-center mb-6`}>
-                  {service.iconSvg ? (
-                    <img src={service.iconSvg} alt={service.title} className="w-8 h-8" />
-                  ) : (
-                    <service.icon className="w-8 h-8 text-white" />
-                  )}
+                  <service.icon className="w-8 h-8 text-white" />
                 </div>
                 
                 <h3 className="text-xl font-bold text-gray-900 mb-4">
@@ -358,15 +335,6 @@ const LandingPage: React.FC = () => {
                 <p className="text-gray-600 mb-6 leading-relaxed">
                   {service.description}
                 </p>
-                
-                <ul className="space-y-2">
-                  {service.features.map((feature, idx) => (
-                    <li key={idx} className="flex items-center text-sm text-gray-600">
-                      <CheckCircle className="w-4 h-4 text-green-500 mr-3 flex-shrink-0" />
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
               </motion.div>
             ))}
           </motion.div>
@@ -386,26 +354,19 @@ const LandingPage: React.FC = () => {
               <div>
                 <div className="inline-flex items-center gap-2 bg-blue-100 text-blue-700 px-4 py-2 rounded-full text-sm font-medium mb-6">
                   <Users className="w-4 h-4" />
-                  Quem Somos
+                  {t.about.badge}
                 </div>
                 <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
-                  Expertise Brasileira em
+                  {t.about.title}
                   <span className="block bg-gradient-to-r from-blue-600 to-orange-500 bg-clip-text text-transparent">
-                    Estudos Elétricos
+                    {t.about.subtitle}
                   </span>
                 </h2>
               </div>
               
               <div className="space-y-6 text-lg text-gray-600 leading-relaxed">
                 <p>
-                  A NEXO Estudos Elétricos é uma consultoria brasileira especializada no Sistema Interligado Nacional, 
-                  com atuação nacional e experiência consolidada no mercado de estudos elétricos.
-                </p>
-                
-                <p>
-                  Nascemos do sonho de engenheiros do setor, que atuaram nos setores de geração, transmissão e distribuição 
-                  e que entendem a necessidade de elaboração de estudos elétricos com viés prático, customizados para cada 
-                  aplicação e embasados em modelos apropriados e tecnicamente consistentes.
+                  {t.about.description}
                 </p>
               </div>
               
@@ -445,20 +406,20 @@ const LandingPage: React.FC = () => {
                 {[
                   {
                     icon: Target,
-                    title: 'MISSÃO',
-                    content: 'Prestar serviços de engenharia consultiva para os agentes do setor elétrico brasileiro, provendo análises técnicas consistentes e na medida exata da necessidade do cliente.',
+                    title: t.about.mission.title,
+                    content: t.about.mission.content,
                     color: 'from-blue-600 to-blue-800'
                   },
                   {
                     icon: Eye,
-                    title: 'VISÃO',
-                    content: 'Ser referência em estudos para o setor elétrico brasileiro, superando a expectativa dos nossos clientes, com portfólio variado de serviços e profissionais qualificados.',
+                    title: t.about.vision.title,
+                    content: t.about.vision.content,
                     color: 'from-orange-500 to-orange-700'
                   },
                   {
                     icon: Heart,
-                    title: 'VALORES',
-                    content: 'Excelência técnica, transparência, ética profissional, compromisso com prazos e rigor científico em todas as nossas análises e recomendações.',
+                    title: t.about.values.title,
+                    content: t.about.values.content,
                     color: 'from-green-600 to-green-800'
                   }
                 ].map((value, index) => (
@@ -496,16 +457,16 @@ const LandingPage: React.FC = () => {
           >
             <div className="inline-flex items-center gap-2 bg-blue-100 text-blue-700 px-4 py-2 rounded-full text-sm font-medium mb-6">
               <Phone className="w-4 h-4" />
-              Entre em Contato
+              {t.contact.badge}
             </div>
             <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
-              Vamos Conversar Sobre
+              {t.contact.title}
               <span className="block bg-gradient-to-r from-blue-600 to-orange-500 bg-clip-text text-transparent">
-                Seu Projeto
+                {t.contact.subtitle}
               </span>
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Estamos prontos para ajudar você a alcançar seus objetivos no setor elétrico brasileiro
+              {t.contact.description}
             </p>
           </motion.div>
 
@@ -517,28 +478,28 @@ const LandingPage: React.FC = () => {
               className="space-y-8"
             >
               <h3 className="text-2xl font-bold text-gray-900 mb-8">
-                Informações de Contato
+                {t.contact.info.title}
               </h3>
               
               <div className="space-y-6">
                 {[
                   {
                     icon: Phone,
-                    title: 'Telefone',
+                    title: t.contact.info.phone,
                     content: '+55 (11) 9999-9999',
                     link: 'tel:+5511999999999',
                     color: 'from-blue-500 to-blue-600'
                   },
                   {
                     icon: Mail,
-                    title: 'Email',
+                    title: t.contact.info.email,
                     content: 'contato@nexoestudos.com.br',
                     link: 'mailto:contato@nexoestudos.com.br',
                     color: 'from-green-500 to-green-600'
                   },
                   {
                     icon: MapPin,
-                    title: 'Localização',
+                    title: t.contact.info.location,
                     content: 'São Paulo, SP - Brasil',
                     link: '#',
                     color: 'from-orange-500 to-orange-600'
@@ -573,55 +534,55 @@ const LandingPage: React.FC = () => {
               className="bg-white rounded-3xl p-8 shadow-2xl border border-gray-100"
             >
               <h3 className="text-2xl font-bold text-gray-900 mb-8">
-                Solicite seu Estudo
+                {t.contact.form.title}
               </h3>
               
               <form className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-3">
-                      Nome da Empresa
+                      {t.contact.form.companyName}
                     </label>
                     <input
                       type="text"
                       className="w-full px-4 py-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 bg-gray-50 focus:bg-white"
-                      placeholder="Nome da empresa"
+                      placeholder={t.contact.form.companyName}
                     />
                   </div>
                   
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-3">
-                      Email Corporativo
+                      {t.contact.form.corporateEmail}
                     </label>
                     <input
                       type="email"
                       className="w-full px-4 py-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 bg-gray-50 focus:bg-white"
-                      placeholder="Email corporativo"
+                      placeholder={t.contact.form.corporateEmail}
                     />
                   </div>
                 </div>
                 
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-3">
-                    Tipo de Projeto
+                    {t.contact.form.projectType}
                   </label>
                   <select className="w-full px-4 py-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 bg-gray-50 focus:bg-white">
-                    <option>Selecione o tipo de projeto</option>
-                    <option>Geração Renovável</option>
-                    <option>Transmissão</option>
-                    <option>Distribuição</option>
-                    <option>Outros</option>
+                    <option>{t.contact.form.projectTypeOptions.select}</option>
+                    <option>{t.contact.form.projectTypeOptions.renewable}</option>
+                    <option>{t.contact.form.projectTypeOptions.transmission}</option>
+                    <option>{t.contact.form.projectTypeOptions.distribution}</option>
+                    <option>{t.contact.form.projectTypeOptions.others}</option>
                   </select>
                 </div>
                 
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-3">
-                    Descrição do Projeto
+                    {t.contact.form.projectDescription}
                   </label>
                   <textarea
                     rows={4}
                     className="w-full px-4 py-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 bg-gray-50 focus:bg-white resize-none"
-                    placeholder="Descreva seu projeto e necessidades específicas"
+                    placeholder={t.contact.form.projectDescriptionPlaceholder}
                   ></textarea>
                 </div>
                 
@@ -632,7 +593,7 @@ const LandingPage: React.FC = () => {
                     whileHover={{ scale: 1.02, y: -2 }}
                     whileTap={{ scale: 0.98 }}
                   >
-                    Solicitar Estudo
+                    {t.contact.form.requestStudyBtn}
                   </motion.button>
                   <motion.button
                     type="button"
@@ -640,7 +601,7 @@ const LandingPage: React.FC = () => {
                     whileHover={{ scale: 1.02, y: -2 }}
                     whileTap={{ scale: 0.98 }}
                   >
-                    Agendar Reunião
+                    {t.contact.form.scheduleMeetingBtn}
                   </motion.button>
                 </div>
               </form>
@@ -733,7 +694,7 @@ const LandingPage: React.FC = () => {
         
         {/* Tooltip */}
         <div className="absolute right-full mr-3 top-1/2 transform -translate-y-1/2 bg-gray-900 text-white px-3 py-2 rounded-lg text-sm whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-          Fale conosco no WhatsApp
+          {t.whatsapp.tooltip}
           <div className="absolute left-full top-1/2 transform -translate-y-1/2 border-4 border-transparent border-l-gray-900"></div>
         </div>
         

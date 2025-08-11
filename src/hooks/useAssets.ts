@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { preloadAssets, criticalAssets } from '../assets'
+import { criticalAssets } from '../assets'
 
 interface AssetLoadingState {
   isLoading: boolean
@@ -22,7 +22,7 @@ export const useAssets = (assetPaths?: string[]) => {
     const loadAssets = async () => {
       setLoadingState(prev => ({ ...prev, isLoading: true }))
       
-      const loadPromises = assetsToLoad.map(async (assetPath, index) => {
+      const loadPromises = assetsToLoad.map(async (assetPath) => {
         try {
           // Simulate loading for different asset types
           if (assetPath.includes('.mp4') || assetPath.includes('.webm')) {
