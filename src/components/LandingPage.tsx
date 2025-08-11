@@ -270,7 +270,6 @@ const LandingPage: React.FC = () => {
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
             className="text-center mb-20"
           >
             <div className="inline-flex items-center gap-2 bg-blue-100 text-blue-700 px-4 py-2 rounded-full text-sm font-medium mb-6">
@@ -292,7 +291,6 @@ const LandingPage: React.FC = () => {
             variants={staggerContainer}
             initial="initial"
             whileInView="animate"
-            viewport={{ once: true }}
             className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
           >
             {[
@@ -383,7 +381,6 @@ const LandingPage: React.FC = () => {
               initial={{ opacity: 0, x: -50 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
               className="space-y-8"
             >
               <div>
@@ -424,7 +421,6 @@ const LandingPage: React.FC = () => {
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.1 }}
-                    viewport={{ once: true }}
                     className="bg-gray-50 rounded-xl p-6 text-center"
                   >
                     <item.icon className="w-8 h-8 text-blue-600 mx-auto mb-3" />
@@ -439,7 +435,6 @@ const LandingPage: React.FC = () => {
               initial={{ opacity: 0, x: 50 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
               className="space-y-8"
             >
               <h3 className="text-3xl font-bold text-gray-900 text-center mb-8">
@@ -472,7 +467,6 @@ const LandingPage: React.FC = () => {
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.2 }}
-                    viewport={{ once: true }}
                     whileHover={{ scale: 1.02 }}
                     className={`bg-gradient-to-r ${value.color} rounded-2xl p-6 text-white`}
                   >
@@ -498,7 +492,6 @@ const LandingPage: React.FC = () => {
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
             className="text-center mb-16"
           >
             <div className="inline-flex items-center gap-2 bg-blue-100 text-blue-700 px-4 py-2 rounded-full text-sm font-medium mb-6">
@@ -521,7 +514,6 @@ const LandingPage: React.FC = () => {
               initial={{ opacity: 0, x: -50 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
               className="space-y-8"
             >
               <h3 className="text-2xl font-bold text-gray-900 mb-8">
@@ -558,7 +550,6 @@ const LandingPage: React.FC = () => {
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.1 }}
-                    viewport={{ once: true }}
                     whileHover={{ scale: 1.02, y: -2 }}
                     className="flex items-center p-6 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100"
                   >
@@ -579,7 +570,6 @@ const LandingPage: React.FC = () => {
               initial={{ opacity: 0, x: 50 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
               className="bg-white rounded-3xl p-8 shadow-2xl border border-gray-100"
             >
               <h3 className="text-2xl font-bold text-gray-900 mb-8">
