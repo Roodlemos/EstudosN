@@ -101,19 +101,10 @@ const LandingPage: React.FC = () => {
           <div className="flex items-center justify-between">
             <motion.div 
               whileHover={{ scale: 1.05 }}
-              className="flex items-center gap-3"
+              className="flex items-center"
             >
-              <div className="w-10 h-10 flex items-center justify-center">
-                <img src={svgs.nexoLogo} alt="NEXO Logo" className="w-10 h-10" />
-              </div>
-              <div className={`text-2xl font-bold transition-all duration-300 ${
-                activeSection === 'inicio'
-                  ? 'text-white'
-                  : isDark
-                    ? 'text-white'
-                    : 'bg-gradient-to-r from-blue-600 to-orange-500 bg-clip-text text-transparent'
-              }`}>
-                NEXO Estudos Elétricos
+              <div className="w-12 h-12 flex items-center justify-center">
+                <img src={svgs.nexoLogo} alt="NEXO Logo" className="w-12 h-12" />
               </div>
             </motion.div>
             
@@ -642,11 +633,10 @@ const LandingPage: React.FC = () => {
         <div className="container mx-auto px-6">
           <div className="grid md:grid-cols-4 gap-8 mb-12">
             <div className="space-y-6">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 flex items-center justify-center">
-                  <img src={svgs.nexoLogo} alt="NEXO Logo" className="w-10 h-10" />
+              <div className="flex items-center">
+                <div className="w-12 h-12 flex items-center justify-center">
+                  <img src={svgs.nexoLogo} alt="NEXO Logo" className="w-12 h-12" />
                 </div>
-                <div className="text-xl font-bold">NEXO Estudos Elétricos</div>
               </div>
               <p className="text-gray-400 dark:text-gray-300 leading-relaxed">
                 Consultoria brasileira especializada no Sistema Interligado Nacional, 
@@ -687,7 +677,7 @@ const LandingPage: React.FC = () => {
           
           <div className="border-t border-gray-800 dark:border-gray-700 pt-8 flex flex-col md:flex-row justify-between items-center">
             <p className="text-gray-400 dark:text-gray-300 mb-4 md:mb-0">
-              &copy; 2024 NEXO Estudos Elétricos. Todos os direitos reservados.
+              &copy; 2024. Todos os direitos reservados.
             </p>
             <div className="flex gap-6 text-gray-400 dark:text-gray-300">
               <span className="cursor-pointer hover:text-white transition-colors">🇧🇷 PT</span>
