@@ -2,7 +2,7 @@
 // This file centralizes all asset imports for better organization
 
 // Direct SVG imports for proper bundling
-import nexoLogo from './images/Logo.svg'
+import nexoLogo from './images/Logo.png'
 import electricalGridAnimated from './svgs/electrical-grid-animated.svg'
 import electricalStudies from './icons/electrical-studies.svg'
 import protectionSystems from './icons/protection-systems.svg'
