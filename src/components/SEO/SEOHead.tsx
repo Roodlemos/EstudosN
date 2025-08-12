@@ -21,7 +21,7 @@ const SEOHead: React.FC<SEOHeadProps> = ({
   type = 'website',
   section = 'home'
 }) => {
-  const { t, i18n } = useTranslation();
+  const { i18n } = useTranslation();
   const currentLang = i18n.language;
 
   // Default SEO values optimized for "nexo" keyword

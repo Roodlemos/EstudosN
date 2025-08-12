@@ -10,7 +10,7 @@ import { AuthProvider } from './context/AuthContext'
 import { LanguageProvider } from './context/LanguageContext'
 import { ThemeProvider } from './context/ThemeContext'
 import { StudyRequestProvider } from './context/StudyRequestContext'
-import { Analytics } from './utils/analytics'
+// import { Analytics } from './utils/analytics' // TODO: Initialize analytics when needed
 
 function App() {
   // Initialize Analytics (replace with your actual GA4 Measurement ID)
