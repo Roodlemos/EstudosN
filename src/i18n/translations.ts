@@ -116,11 +116,11 @@ export const translations: Record<string, Translation> = {
       requestStudy: 'Solicitar Estudo'
     },
     hero: {
-      title: 'NEXO Estudos Elétricos de Excelência',
-      subtitle: 'O nexo entre inovação e expertise no setor energético brasileiro',
-      description: 'A NEXO conecta soluções técnicas especializadas em geração, transmissão e distribuição de energia elétrica, criando o nexo perfeito entre rigor científico e inovação tecnológica.',
-      requestStudyBtn: 'Solicitar Estudo',
-      learnMoreBtn: 'Saiba Mais'
+      title: 'Onde a Energia do Futuro Nasce',
+      subtitle: 'Excelência técnica no setor elétrico brasileiro',
+      description: 'A Nexo conecta visão inovadora e expertise consolidada. Soluções de alta performance em geração, transmissão e distribuição com precisão científica.',
+      requestStudyBtn: 'Iniciar Projeto',
+      learnMoreBtn: 'Descobrir Mais'
     },
     services: {
       badge: 'Nossos Serviços',
@@ -213,11 +213,11 @@ export const translations: Record<string, Translation> = {
       requestStudy: 'Request Study'
     },
     hero: {
-      title: 'NEXO - Excellence in Electrical Studies',
-      subtitle: 'The nexus between innovation and expertise in the Brazilian energy sector',
-      description: 'NEXO connects specialized technical solutions in electrical power generation, transmission and distribution, creating the perfect nexus between scientific rigor and technological innovation.',
-      requestStudyBtn: 'Request Study',
-      learnMoreBtn: 'Learn More'
+      title: 'Where Future Energy is Born',
+      subtitle: 'Technical excellence in Brazil\'s electrical sector',
+      description: 'Nexo connects innovative vision and consolidated expertise. High-performance solutions in generation, transmission and distribution with scientific precision.',
+      requestStudyBtn: 'Start Project',
+      learnMoreBtn: 'Discover More'
     },
     services: {
       badge: 'Our Services',
@@ -310,11 +310,11 @@ export const translations: Record<string, Translation> = {
       requestStudy: 'Solicitar Estudio'
     },
     hero: {
-      title: 'NEXO - Estudios Eléctricos de Excelencia',
-      subtitle: 'El nexo entre innovación y experiencia en el sector energético brasileño',
-      description: 'NEXO conecta soluciones técnicas especializadas en generación, transmisión y distribución de energía eléctrica, creando el nexo perfecto entre rigor científico e innovación tecnológica.',
-      requestStudyBtn: 'Solicitar Estudio',
-      learnMoreBtn: 'Saber Más'
+      title: 'Donde Nace la Energía del Futuro',
+      subtitle: 'Excelencia técnica en el sector eléctrico brasileño',
+      description: 'Nexo conecta visión innovadora y experiencia consolidada. Soluciones de alto rendimiento en generación, transmisión y distribución con precisión científica.',
+      requestStudyBtn: 'Iniciar Proyecto',
+      learnMoreBtn: 'Descubrir Más'
     },
     services: {
       badge: 'Nuestros Servicios',
