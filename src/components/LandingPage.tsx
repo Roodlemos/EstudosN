@@ -627,7 +627,7 @@ Aguardo retorno para agendarmos!`
                   {
                     icon: MapPin,
                     title: t.contact.info.location,
-                    content: 'São Paulo, SP - Brasil',
+                    content: 'Av. Eng. Luiz Carlos Berrini, 1681, Salas 111 e 112, Cidade Monções - 04.571-011 - São Paulo (SP)',
                     link: '#',
                     color: 'from-orange-500 to-orange-600'
                   }
@@ -646,7 +646,7 @@ Aguardo retorno para agendarmos!`
                     </div>
                     <div>
                       <div className="font-semibold text-gray-900 dark:text-white text-lg">{contact.title}</div>
-                      <div className="text-gray-600 dark:text-gray-300">{contact.content}</div>
+                      <div className={`text-gray-600 dark:text-gray-300 ${contact.title === t.contact.info.location ? 'text-sm' : ''}`}>{contact.content}</div>
                     </div>
                   </motion.a>
                 ))}

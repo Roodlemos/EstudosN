@@ -24,13 +24,11 @@ import {
   Mail,
   CheckCircle,
   XCircle,
-  AlertCircle,
   Eye,
   DollarSign,
   CreditCard,
   PieChart,
   TrendingDown,
-  Home,
   Wifi,
   Shield,
   Cloud,
@@ -248,7 +246,7 @@ const Dashboard: React.FC = () => {
       <motion.div 
         initial={{ x: -300 }}
         animate={{ x: 0 }}
-        className={`w-72 shadow-2xl transition-colors duration-300 ${
+        className={`w-72 h-screen fixed left-0 top-0 z-40 shadow-2xl transition-colors duration-300 ${
           isDark 
             ? 'bg-gradient-to-b from-gray-800 to-gray-900' 
             : 'gradient-bg'
@@ -306,15 +304,15 @@ const Dashboard: React.FC = () => {
       </motion.div>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col ml-72">
         {/* Header */}
         <motion.header 
           initial={{ y: -50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          className={`backdrop-blur-md shadow-lg border-b transition-colors duration-300 ${
+          className={`sticky top-0 z-50 backdrop-blur-md shadow-lg border-b transition-colors duration-300 ${
             isDark 
-              ? 'bg-gray-800/80 border-gray-700/20' 
-              : 'bg-white/80 border-white/20'
+              ? 'bg-gray-800/90 border-gray-700/20' 
+              : 'bg-white/90 border-white/20'
           }`}
         >
           <div className="flex items-center justify-between px-8 py-6">
@@ -416,7 +414,7 @@ const Dashboard: React.FC = () => {
                                   <p className={`text-xs mt-1 transition-colors duration-300 ${
                                     isDark ? 'text-gray-500' : 'text-gray-500'
                                   }`}>
-                                    {new Date(request.createdAt).toLocaleDateString('pt-BR')}
+                                    {new Date(request.submittedAt).toLocaleDateString('pt-BR')}
                                   </p>
                                 </div>
                               </div>
