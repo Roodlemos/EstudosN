@@ -116,9 +116,9 @@ export const translations: Record<string, Translation> = {
       requestStudy: 'Solicitar Estudo'
     },
     hero: {
-      title: 'Estudos Elétricos de Excelência',
-      subtitle: 'para o Setor Energético Brasileiro',
-      description: 'Soluções técnicas especializadas em geração, transmissão e distribuição de energia elétrica com rigor científico e inovação tecnológica.',
+      title: 'NEXO Estudos Elétricos de Excelência',
+      subtitle: 'O nexo entre inovação e expertise no setor energético brasileiro',
+      description: 'A NEXO conecta soluções técnicas especializadas em geração, transmissão e distribuição de energia elétrica, criando o nexo perfeito entre rigor científico e inovação tecnológica.',
       requestStudyBtn: 'Solicitar Estudo',
       learnMoreBtn: 'Saiba Mais'
     },
@@ -146,10 +146,10 @@ export const translations: Record<string, Translation> = {
       }
     },
     about: {
-      badge: 'Sobre Nós',
-      title: 'Excelência Técnica',
-      subtitle: 'e Inovação',
-      description: 'Somos uma empresa especializada em estudos elétricos para o setor energético brasileiro, combinando expertise técnica com as mais modernas ferramentas de análise.',
+      badge: 'Sobre a NEXO',
+      title: 'O Nexo da Excelência Técnica',
+      subtitle: 'e Inovação no Setor Elétrico',
+      description: 'A NEXO é o nexo entre expertise e inovação em estudos elétricos para o setor energético brasileiro, combinando conhecimento técnico especializado com as mais modernas ferramentas de análise.',
       stats: {
         projects: 'Projetos Realizados',
         clients: 'Clientes Atendidos',
@@ -158,11 +158,11 @@ export const translations: Record<string, Translation> = {
       },
       mission: {
         title: 'MISSÃO',
-        content: 'Fornecer estudos elétricos de alta qualidade que contribuam para o desenvolvimento sustentável do setor energético brasileiro, garantindo segurança, eficiência e confiabilidade.'
+        content: 'A NEXO tem como missão ser o nexo entre conhecimento técnico e soluções práticas, fornecendo estudos elétricos de alta qualidade que contribuam para o desenvolvimento sustentável do setor energético brasileiro.'
       },
       vision: {
         title: 'VISÃO',
-        content: 'Ser reconhecida como referência nacional em estudos elétricos, impulsionando a transição energética e a modernização do sistema elétrico brasileiro.'
+        content: 'Ser reconhecida como o principal nexo de referência nacional em estudos elétricos, impulsionando a transição energética e criando conexões inovadoras no sistema elétrico brasileiro.'
       },
       values: {
         title: 'VALORES',
@@ -213,9 +213,9 @@ export const translations: Record<string, Translation> = {
       requestStudy: 'Request Study'
     },
     hero: {
-      title: 'Excellence in Electrical Studies',
-      subtitle: 'for the Brazilian Energy Sector',
-      description: 'Specialized technical solutions in electrical power generation, transmission and distribution with scientific rigor and technological innovation.',
+      title: 'NEXO - Excellence in Electrical Studies',
+      subtitle: 'The nexus between innovation and expertise in the Brazilian energy sector',
+      description: 'NEXO connects specialized technical solutions in electrical power generation, transmission and distribution, creating the perfect nexus between scientific rigor and technological innovation.',
       requestStudyBtn: 'Request Study',
       learnMoreBtn: 'Learn More'
     },
@@ -243,10 +243,10 @@ export const translations: Record<string, Translation> = {
       }
     },
     about: {
-      badge: 'About Us',
-      title: 'Technical Excellence',
-      subtitle: 'and Innovation',
-      description: 'We are a company specialized in electrical studies for the Brazilian energy sector, combining technical expertise with the most modern analysis tools.',
+      badge: 'About NEXO',
+      title: 'The Nexus of Technical Excellence',
+      subtitle: 'and Innovation in the Electrical Sector',
+      description: 'NEXO is the nexus between expertise and innovation in electrical studies for the Brazilian energy sector, combining specialized technical knowledge with the most modern analysis tools.',
       stats: {
         projects: 'Completed Projects',
         clients: 'Clients Served',
@@ -255,11 +255,11 @@ export const translations: Record<string, Translation> = {
       },
       mission: {
         title: 'MISSION',
-        content: 'To provide high-quality electrical studies that contribute to the sustainable development of the Brazilian energy sector, ensuring safety, efficiency and reliability.'
+        content: 'NEXO\'s mission is to be the nexus between technical knowledge and practical solutions, providing high-quality electrical studies that contribute to the sustainable development of the Brazilian energy sector.'
       },
       vision: {
         title: 'VISION',
-        content: 'To be recognized as a national reference in electrical studies, driving the energy transition and modernization of the Brazilian electrical system.'
+        content: 'To be recognized as the main nexus of national reference in electrical studies, driving the energy transition and creating innovative connections in the Brazilian electrical system.'
       },
       values: {
         title: 'VALUES',
@@ -310,9 +310,9 @@ export const translations: Record<string, Translation> = {
       requestStudy: 'Solicitar Estudio'
     },
     hero: {
-      title: 'Estudios Eléctricos de Excelencia',
-      subtitle: 'para el Sector Energético Brasileño',
-      description: 'Soluciones técnicas especializadas en generación, transmisión y distribución de energía eléctrica con rigor científico e innovación tecnológica.',
+      title: 'NEXO - Estudios Eléctricos de Excelencia',
+      subtitle: 'El nexo entre innovación y experiencia en el sector energético brasileño',
+      description: 'NEXO conecta soluciones técnicas especializadas en generación, transmisión y distribución de energía eléctrica, creando el nexo perfecto entre rigor científico e innovación tecnológica.',
       requestStudyBtn: 'Solicitar Estudio',
       learnMoreBtn: 'Saber Más'
     },
@@ -340,10 +340,10 @@ export const translations: Record<string, Translation> = {
       }
     },
     about: {
-      badge: 'Acerca de Nosotros',
-      title: 'Excelencia Técnica',
-      subtitle: 'e Innovación',
-      description: 'Somos una empresa especializada en estudios eléctricos para el sector energético brasileño, combinando experiencia técnica con las herramientas de análisis más modernas.',
+      badge: 'Acerca de NEXO',
+      title: 'El Nexo de la Excelencia Técnica',
+      subtitle: 'e Innovación en el Sector Eléctrico',
+      description: 'NEXO es el nexo entre experiencia e innovación en estudios eléctricos para el sector energético brasileño, combinando conocimiento técnico especializado con las herramientas de análisis más modernas.',
       stats: {
         projects: 'Proyectos Realizados',
         clients: 'Clientes Atendidos',
@@ -352,11 +352,11 @@ export const translations: Record<string, Translation> = {
       },
       mission: {
         title: 'MISIÓN',
-        content: 'Proporcionar estudios eléctricos de alta calidad que contribuyan al desarrollo sostenible del sector energético brasileño, garantizando seguridad, eficiencia y confiabilidad.'
+        content: 'La misión de NEXO es ser el nexo entre conocimiento técnico y soluciones prácticas, proporcionando estudios eléctricos de alta calidad que contribuyan al desarrollo sostenible del sector energético brasileño.'
       },
       vision: {
         title: 'VISIÓN',
-        content: 'Ser reconocida como referencia nacional en estudios eléctricos, impulsando la transición energética y la modernización del sistema eléctrico brasileño.'
+        content: 'Ser reconocida como el principal nexo de referencia nacional en estudios eléctricos, impulsando la transición energética y creando conexiones innovadoras en el sistema eléctrico brasileño.'
       },
       values: {
         title: 'VALORES',
