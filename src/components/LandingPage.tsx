@@ -103,8 +103,8 @@ const LandingPage: React.FC = () => {
               whileHover={{ scale: 1.05 }}
               className="flex items-center"
             >
-              <div className="w-16 h-16 flex items-center justify-center">
-                <img src={svgs.nexoLogo} alt="NEXO Logo" className="w-16 h-16" />
+              <div className="w-32 h-32 flex items-center justify-center">
+                <img src={svgs.nexoLogo} alt="NEXO Logo" className="w-32 h-32" />
               </div>
             </motion.div>
             
@@ -634,8 +634,8 @@ const LandingPage: React.FC = () => {
           <div className="grid md:grid-cols-4 gap-8 mb-12">
             <div className="space-y-6">
               <div className="flex items-center">
-                <div className="w-16 h-16 flex items-center justify-center">
-                  <img src={svgs.nexoLogo} alt="NEXO Logo" className="w-16 h-16" />
+                <div className="w-32 h-32 flex items-center justify-center">
+                  <img src={svgs.nexoLogo} alt="NEXO Logo" className="w-32 h-32" />
                 </div>
               </div>
               <p className="text-gray-400 dark:text-gray-300 leading-relaxed">
