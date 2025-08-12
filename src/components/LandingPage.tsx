@@ -23,10 +23,13 @@ import {
 import { svgs } from '../assets';
 import ElectricalPanorama from './ElectricalPanorama';
 import LanguageSelector from './LanguageSelector';
+import ThemeToggle from './ThemeToggle';
 import { useLanguage } from '../context/LanguageContext';
+import { useTheme } from '../context/ThemeContext';
 
 const LandingPage: React.FC = () => {
   const { t } = useLanguage();
+  const { isDark } = useTheme();
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [activeSection, setActiveSection] = useState('inicio')
 
@@ -80,7 +83,7 @@ const LandingPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-white overflow-x-hidden">
+    <div className="min-h-screen bg-white dark:bg-gray-900 overflow-x-hidden transition-colors duration-300">
       {/* Header */}
       <motion.header 
         initial={{ opacity: 0, y: -50 }}
@@ -89,7 +92,9 @@ const LandingPage: React.FC = () => {
         className={`fixed w-full top-0 z-50 transition-all duration-300 ${
           activeSection === 'inicio' 
             ? 'bg-transparent backdrop-blur-sm' 
-            : 'bg-white/95 backdrop-blur-lg shadow-lg border-b border-gray-100'
+            : isDark 
+              ? 'bg-gray-800/95 backdrop-blur-lg shadow-lg border-b border-gray-700'
+              : 'bg-white/95 backdrop-blur-lg shadow-lg border-b border-gray-100'
         }`}
       >
         <div className="container mx-auto px-6 py-5">
@@ -104,7 +109,9 @@ const LandingPage: React.FC = () => {
               <div className={`text-2xl font-bold transition-all duration-300 ${
                 activeSection === 'inicio'
                   ? 'text-white'
-                  : 'bg-gradient-to-r from-blue-600 to-orange-500 bg-clip-text text-transparent'
+                  : isDark
+                    ? 'text-white'
+                    : 'bg-gradient-to-r from-blue-600 to-orange-500 bg-clip-text text-transparent'
               }`}>
                 NEXO Estudos Elétricos
               </div>
@@ -125,7 +132,9 @@ const LandingPage: React.FC = () => {
                   className={`transition-all duration-300 font-medium relative group ${
                     activeSection === 'inicio'
                       ? 'text-white hover:text-blue-300'
-                      : 'text-gray-700 hover:text-blue-600'
+                      : isDark
+                        ? 'text-gray-300 hover:text-blue-400'
+                        : 'text-gray-700 hover:text-blue-600'
                   }`}
                 >
                   {item.name}
@@ -135,6 +144,7 @@ const LandingPage: React.FC = () => {
             </nav>
 
             <div className="hidden lg:flex items-center space-x-4">
+              <ThemeToggle />
               <LanguageSelector />
               <Link to="/login">
                 <motion.button 
@@ -148,14 +158,21 @@ const LandingPage: React.FC = () => {
             </div>
 
             {/* Mobile Menu Button */}
-            <button
-              className={`lg:hidden p-2 transition-colors duration-300 ${
-                activeSection === 'inicio' ? 'text-white' : 'text-gray-700'
-              }`}
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-            >
-              {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
+            <div className="lg:hidden flex items-center space-x-2">
+              <ThemeToggle />
+              <button
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                className={`p-2 rounded-lg transition-colors ${
+                  activeSection === 'inicio'
+                    ? 'text-white hover:bg-white/10'
+                    : isDark
+                      ? 'text-gray-300 hover:bg-gray-700'
+                      : 'text-gray-700 hover:bg-gray-100'
+                }`}
+              >
+                {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+              </button>
+            </div>
           </div>
 
           {/* Mobile Navigation */}
@@ -167,7 +184,9 @@ const LandingPage: React.FC = () => {
               className={`lg:hidden mt-6 pb-6 pt-6 transition-all duration-300 ${
                 activeSection === 'inicio'
                   ? 'bg-black/20 backdrop-blur-md border-t border-white/20'
-                  : 'border-t border-gray-100'
+                  : isDark
+                    ? 'bg-gray-800/95 backdrop-blur-md border-t border-gray-700'
+                    : 'bg-white/95 backdrop-blur-md border-t border-gray-100'
               }`}
             >
               {[
@@ -182,14 +201,22 @@ const LandingPage: React.FC = () => {
                   className={`block py-3 font-medium transition-colors duration-300 ${
                     activeSection === 'inicio'
                       ? 'text-white hover:text-blue-300'
-                      : 'text-gray-700 hover:text-blue-600'
+                      : isDark
+                        ? 'text-gray-300 hover:text-blue-400'
+                        : 'text-gray-700 hover:text-blue-600'
                   }`}
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {item.name}
                 </a>
               ))}
-              <div className="mt-4 pt-4 border-t border-white/20">
+              <div className={`mt-4 pt-4 border-t ${
+                activeSection === 'inicio'
+                  ? 'border-white/20'
+                  : isDark
+                    ? 'border-gray-700'
+                    : 'border-gray-200'
+              }`}>
                 <LanguageSelector />
               </div>
               <Link to="/login" className="block mt-4">
@@ -263,7 +290,7 @@ const LandingPage: React.FC = () => {
       </section>
 
       {/* Services Section */}
-      <section id="servicos" className="py-24 bg-gray-50">
+      <section id="servicos" className="py-24 bg-gray-50 dark:bg-gray-800 transition-colors duration-300">
         <div className="container mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
@@ -271,17 +298,17 @@ const LandingPage: React.FC = () => {
             transition={{ duration: 0.8 }}
             className="text-center mb-20"
           >
-            <div className="inline-flex items-center gap-2 bg-blue-100 text-blue-700 px-4 py-2 rounded-full text-sm font-medium mb-6">
+            <div className="inline-flex items-center gap-2 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-4 py-2 rounded-full text-sm font-medium mb-6">
               <Settings className="w-4 h-4" />
               {t.services.badge}
             </div>
-            <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
+            <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-6">
               {t.services.title}
               <span className="block bg-gradient-to-r from-blue-600 to-orange-500 bg-clip-text text-transparent">
                 {t.services.subtitle}
               </span>
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
               Oferecemos consultoria especializada para todos os segmentos do setor elétrico brasileiro
             </p>
           </motion.div>
@@ -322,17 +349,17 @@ const LandingPage: React.FC = () => {
                 key={service.title}
                 variants={fadeInUp}
                 whileHover={{ y: -10, scale: 1.02 }}
-                className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100"
-              >
+                className="bg-white dark:bg-gray-700 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 dark:border-gray-600"
+               >
                 <div className={`w-16 h-16 bg-gradient-to-r ${service.color} rounded-2xl flex items-center justify-center mb-6`}>
                   <service.icon className="w-8 h-8 text-white" />
                 </div>
                 
-                <h3 className="text-xl font-bold text-gray-900 mb-4">
+                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
                   {service.title}
                 </h3>
                 
-                <p className="text-gray-600 mb-6 leading-relaxed">
+                <p className="text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
                   {service.description}
                 </p>
               </motion.div>
@@ -342,7 +369,7 @@ const LandingPage: React.FC = () => {
       </section>
 
       {/* About Section */}
-      <section id="sobre" className="py-24 bg-white">
+      <section id="sobre" className="py-24 bg-white dark:bg-gray-900 transition-colors duration-300">
         <div className="container mx-auto px-6">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <motion.div
@@ -352,11 +379,11 @@ const LandingPage: React.FC = () => {
               className="space-y-8"
             >
               <div>
-                <div className="inline-flex items-center gap-2 bg-blue-100 text-blue-700 px-4 py-2 rounded-full text-sm font-medium mb-6">
+                <div className="inline-flex items-center gap-2 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-4 py-2 rounded-full text-sm font-medium mb-6">
                   <Users className="w-4 h-4" />
                   {t.about.badge}
                 </div>
-                <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
+                <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-6">
                   {t.about.title}
                   <span className="block bg-gradient-to-r from-blue-600 to-orange-500 bg-clip-text text-transparent">
                     {t.about.subtitle}
@@ -364,7 +391,7 @@ const LandingPage: React.FC = () => {
                 </h2>
               </div>
               
-              <div className="space-y-6 text-lg text-gray-600 leading-relaxed">
+              <div className="space-y-6 text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
                 <p>
                   {t.about.description}
                 </p>
@@ -382,11 +409,11 @@ const LandingPage: React.FC = () => {
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.1 }}
-                    className="bg-gray-50 rounded-xl p-6 text-center"
+                    className="bg-gray-50 dark:bg-gray-700 rounded-xl p-6 text-center"
                   >
                     <item.icon className="w-8 h-8 text-blue-600 mx-auto mb-3" />
-                    <div className="font-semibold text-gray-900 mb-1">{item.title}</div>
-                    <div className="text-sm text-gray-600">{item.desc}</div>
+                    <div className="font-semibold text-gray-900 dark:text-white mb-1">{item.title}</div>
+                    <div className="text-sm text-gray-600 dark:text-gray-300">{item.desc}</div>
                   </motion.div>
                 ))}
               </div>
@@ -398,7 +425,7 @@ const LandingPage: React.FC = () => {
               transition={{ duration: 0.8 }}
               className="space-y-8"
             >
-              <h3 className="text-3xl font-bold text-gray-900 text-center mb-8">
+              <h3 className="text-3xl font-bold text-gray-900 dark:text-white text-center mb-8">
                 Nossos Valores
               </h3>
               
@@ -447,7 +474,7 @@ const LandingPage: React.FC = () => {
       </section>
 
       {/* Contact Section */}
-      <section id="contato" className="py-24 bg-gradient-to-br from-gray-50 to-blue-50">
+      <section id="contato" className="py-24 bg-gradient-to-br from-gray-50 to-blue-50 dark:from-gray-800 dark:to-gray-900 transition-colors duration-300">
         <div className="container mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
@@ -455,17 +482,17 @@ const LandingPage: React.FC = () => {
             transition={{ duration: 0.8 }}
             className="text-center mb-16"
           >
-            <div className="inline-flex items-center gap-2 bg-blue-100 text-blue-700 px-4 py-2 rounded-full text-sm font-medium mb-6">
+            <div className="inline-flex items-center gap-2 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-4 py-2 rounded-full text-sm font-medium mb-6">
               <Phone className="w-4 h-4" />
               {t.contact.badge}
             </div>
-            <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
+            <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-6">
               {t.contact.title}
               <span className="block bg-gradient-to-r from-blue-600 to-orange-500 bg-clip-text text-transparent">
                 {t.contact.subtitle}
               </span>
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
               {t.contact.description}
             </p>
           </motion.div>
@@ -477,7 +504,7 @@ const LandingPage: React.FC = () => {
               transition={{ duration: 0.8 }}
               className="space-y-8"
             >
-              <h3 className="text-2xl font-bold text-gray-900 mb-8">
+              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-8">
                 {t.contact.info.title}
               </h3>
               
@@ -512,14 +539,14 @@ const LandingPage: React.FC = () => {
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.1 }}
                     whileHover={{ scale: 1.02, y: -2 }}
-                    className="flex items-center p-6 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100"
+                    className="flex items-center p-6 bg-white dark:bg-gray-700 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-gray-600"
                   >
                     <div className={`w-14 h-14 bg-gradient-to-r ${contact.color} rounded-xl flex items-center justify-center mr-6`}>
                       <contact.icon className="w-7 h-7 text-white" />
                     </div>
                     <div>
-                      <div className="font-semibold text-gray-900 text-lg">{contact.title}</div>
-                      <div className="text-gray-600">{contact.content}</div>
+                      <div className="font-semibold text-gray-900 dark:text-white text-lg">{contact.title}</div>
+                      <div className="text-gray-600 dark:text-gray-300">{contact.content}</div>
                     </div>
                   </motion.a>
                 ))}
@@ -531,42 +558,42 @@ const LandingPage: React.FC = () => {
               initial={{ opacity: 0, x: 50 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
-              className="bg-white rounded-3xl p-8 shadow-2xl border border-gray-100"
+              className="bg-white dark:bg-gray-800 rounded-3xl p-8 shadow-2xl border border-gray-100 dark:border-gray-600"
             >
-              <h3 className="text-2xl font-bold text-gray-900 mb-8">
+              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-8">
                 {t.contact.form.title}
               </h3>
               
               <form className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-3">
+                    <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
                       {t.contact.form.companyName}
                     </label>
                     <input
                       type="text"
-                      className="w-full px-4 py-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 bg-gray-50 focus:bg-white"
+                      className="w-full px-4 py-4 border border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 bg-gray-50 dark:bg-gray-700 focus:bg-white dark:focus:bg-gray-600 text-gray-900 dark:text-white"
                       placeholder={t.contact.form.companyName}
                     />
                   </div>
                   
                   <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-3">
+                    <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
                       {t.contact.form.corporateEmail}
                     </label>
                     <input
                       type="email"
-                      className="w-full px-4 py-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 bg-gray-50 focus:bg-white"
+                      className="w-full px-4 py-4 border border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 bg-gray-50 dark:bg-gray-700 focus:bg-white dark:focus:bg-gray-600 text-gray-900 dark:text-white"
                       placeholder={t.contact.form.corporateEmail}
                     />
                   </div>
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-3">
+                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
                     {t.contact.form.projectType}
                   </label>
-                  <select className="w-full px-4 py-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 bg-gray-50 focus:bg-white">
+                  <select className="w-full px-4 py-4 border border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 bg-gray-50 dark:bg-gray-700 focus:bg-white dark:focus:bg-gray-600 text-gray-900 dark:text-white">
                     <option>{t.contact.form.projectTypeOptions.select}</option>
                     <option>{t.contact.form.projectTypeOptions.renewable}</option>
                     <option>{t.contact.form.projectTypeOptions.transmission}</option>
@@ -576,12 +603,12 @@ const LandingPage: React.FC = () => {
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-3">
+                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
                     {t.contact.form.projectDescription}
                   </label>
                   <textarea
                     rows={4}
-                    className="w-full px-4 py-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 bg-gray-50 focus:bg-white resize-none"
+                    className="w-full px-4 py-4 border border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 bg-gray-50 dark:bg-gray-700 focus:bg-white dark:focus:bg-gray-600 text-gray-900 dark:text-white resize-none"
                     placeholder={t.contact.form.projectDescriptionPlaceholder}
                   ></textarea>
                 </div>
@@ -611,7 +638,7 @@ const LandingPage: React.FC = () => {
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-16">
+      <footer className="bg-gray-900 dark:bg-gray-950 text-white py-16 transition-colors duration-300">
         <div className="container mx-auto px-6">
           <div className="grid md:grid-cols-4 gap-8 mb-12">
             <div className="space-y-6">
@@ -621,7 +648,7 @@ const LandingPage: React.FC = () => {
                 </div>
                 <div className="text-xl font-bold">NEXO Estudos Elétricos</div>
               </div>
-              <p className="text-gray-400 leading-relaxed">
+              <p className="text-gray-400 dark:text-gray-300 leading-relaxed">
                 Consultoria brasileira especializada no Sistema Interligado Nacional, 
                 oferecendo soluções técnicas de excelência.
               </p>
@@ -629,7 +656,7 @@ const LandingPage: React.FC = () => {
             
             <div>
               <h4 className="font-semibold mb-6 text-lg">Serviços</h4>
-              <ul className="space-y-3 text-gray-400">
+              <ul className="space-y-3 text-gray-400 dark:text-gray-300">
                 <li><a href="#" className="hover:text-white transition-colors">Estudos de Acesso</a></li>
                 <li><a href="#" className="hover:text-white transition-colors">Relatórios R2</a></li>
                 <li><a href="#" className="hover:text-white transition-colors">Modelagem Renovável</a></li>
@@ -639,7 +666,7 @@ const LandingPage: React.FC = () => {
             
             <div>
               <h4 className="font-semibold mb-6 text-lg">Empresa</h4>
-              <ul className="space-y-3 text-gray-400">
+              <ul className="space-y-3 text-gray-400 dark:text-gray-300">
                 <li><a href="#" className="hover:text-white transition-colors">Sobre Nós</a></li>
                 <li><a href="#" className="hover:text-white transition-colors">Equipe</a></li>
                 <li><a href="#" className="hover:text-white transition-colors">Carreiras</a></li>
@@ -649,7 +676,7 @@ const LandingPage: React.FC = () => {
             
             <div>
               <h4 className="font-semibold mb-6 text-lg">Suporte</h4>
-              <ul className="space-y-3 text-gray-400">
+              <ul className="space-y-3 text-gray-400 dark:text-gray-300">
                 <li><a href="#" className="hover:text-white transition-colors">Documentação</a></li>
                 <li><a href="#" className="hover:text-white transition-colors">Política de Privacidade</a></li>
                 <li><a href="#" className="hover:text-white transition-colors">Termos de Uso</a></li>
@@ -658,11 +685,11 @@ const LandingPage: React.FC = () => {
             </div>
           </div>
           
-          <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center">
-            <p className="text-gray-400 mb-4 md:mb-0">
+          <div className="border-t border-gray-800 dark:border-gray-700 pt-8 flex flex-col md:flex-row justify-between items-center">
+            <p className="text-gray-400 dark:text-gray-300 mb-4 md:mb-0">
               &copy; 2024 NEXO Estudos Elétricos. Todos os direitos reservados.
             </p>
-            <div className="flex gap-6 text-gray-400">
+            <div className="flex gap-6 text-gray-400 dark:text-gray-300">
               <span className="cursor-pointer hover:text-white transition-colors">🇧🇷 PT</span>
               <span className="cursor-pointer hover:text-white transition-colors">🇺🇸 EN</span>
               <span className="cursor-pointer hover:text-white transition-colors">🇪🇸 ES</span>
