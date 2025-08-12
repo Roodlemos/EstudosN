@@ -1,6 +1,14 @@
 // Assets configuration and exports
 // This file centralizes all asset imports for better organization
 
+// Direct SVG imports for proper bundling
+import nexoLogo from './svgs/nexo-logo.svg'
+import electricalGridAnimated from './svgs/electrical-grid-animated.svg'
+import electricalStudies from './icons/electrical-studies.svg'
+import protectionSystems from './icons/protection-systems.svg'
+import powerAnalysis from './icons/power-analysis.svg'
+import electricalPanorama from './videos/electrical-panorama.svg'
+
 // Images
 export const images = {
   // Company logos and branding
@@ -23,7 +31,7 @@ export const images = {
 
 // Videos
 export const videos = {
-  electricalPanorama: '/src/assets/videos/electrical-panorama.svg',
+  electricalPanorama: electricalPanorama,
   heroBackground: '/src/assets/videos/electrical-grid-background.mp4',
   heroBackgroundWebm: '/src/assets/videos/electrical-grid-background.webm',
   companyPresentation: '/src/assets/videos/company-presentation.mp4',
@@ -35,15 +43,15 @@ export const svgs = {
   powerLines: '/src/assets/svgs/power-lines.svg',
   transformer: '/src/assets/svgs/transformer.svg',
   electricalSymbols: '/src/assets/svgs/electrical-symbols.svg',
-  electricalGridAnimated: '/src/assets/svgs/electrical-grid-animated.svg',
-  nexoLogo: '/src/assets/svgs/nexo-logo.svg'
+  electricalGridAnimated: electricalGridAnimated,
+  nexoLogo: nexoLogo
 }
 
 // Icons
 export const icons = {
-  electricalStudies: '/src/assets/icons/electrical-studies.svg',
-  protectionSystems: '/src/assets/icons/protection-systems.svg',
-  powerAnalysis: '/src/assets/icons/power-analysis.svg'
+  electricalStudies: electricalStudies,
+  protectionSystems: protectionSystems,
+  powerAnalysis: powerAnalysis
 }
 
 // Fonts
