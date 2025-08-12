@@ -18,7 +18,8 @@ import {
   Clock,
   Globe,
   Lightbulb,
-  Settings
+  Settings,
+  Linkedin
 } from 'lucide-react'
 import { svgs } from '../assets';
 import ElectricalPanorama from './ElectricalPanorama';
@@ -504,15 +505,15 @@ const LandingPage: React.FC = () => {
                   {
                     icon: Phone,
                     title: t.contact.info.phone,
-                    content: '+55 (11) 9999-9999',
-                    link: 'tel:+5511999999999',
+                    content: '+55 (31) 9 7228-1758',
+                    link: 'tel:+5531972281758',
                     color: 'from-blue-500 to-blue-600'
                   },
                   {
                     icon: Mail,
                     title: t.contact.info.email,
-                    content: 'contato@nexoestudos.com.br',
-                    link: 'mailto:contato@nexoestudos.com.br',
+                    content: 'estudos@nexoestudos.com.br',
+                    link: 'mailto:estudos@nexoestudos.com.br',
                     color: 'from-green-500 to-green-600'
                   },
                   {
@@ -642,6 +643,17 @@ const LandingPage: React.FC = () => {
                 Consultoria brasileira especializada no Sistema Interligado Nacional, 
                 oferecendo soluções técnicas de excelência.
               </p>
+              <div className="flex space-x-4 mt-6">
+                <motion.a
+                  href="https://www.linkedin.com/company/nexo-estudos-el%C3%A9tricos/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  whileHover={{ scale: 1.1, y: -2 }}
+                  className="w-10 h-10 bg-gradient-to-r from-blue-600 to-blue-700 rounded-lg flex items-center justify-center text-white hover:shadow-lg transition-all duration-300"
+                >
+                  <Linkedin size={20} />
+                </motion.a>
+              </div>
             </div>
             
             <div>
@@ -690,7 +702,7 @@ const LandingPage: React.FC = () => {
 
       {/* WhatsApp Floating Button */}
       <motion.a
-        href="https://wa.me/5511999999999?text=Olá! Gostaria de solicitar um estudo elétrico."
+        href="https://wa.me/5531972281758?text=Olá! Gostaria de solicitar um estudo elétrico."
         target="_blank"
         rel="noopener noreferrer"
         className="fixed bottom-6 right-6 z-50 bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-2xl transition-all duration-300 group"

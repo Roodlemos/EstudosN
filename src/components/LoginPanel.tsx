@@ -129,7 +129,7 @@ const LoginPanel: React.FC = () => {
           >
             <h3 className="text-sm font-semibold text-blue-800 mb-2">Credenciais de Demonstração:</h3>
             <p className="text-sm text-blue-700">
-              <strong>Email:</strong> admin@nexoestudos.com.br<br />
+              <strong>Email:</strong> estudos@nexoestudos.com.br<br />
               <strong>Senha:</strong> admin123
             </p>
           </motion.div>
@@ -162,7 +162,7 @@ const LoginPanel: React.FC = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-300"
-                  placeholder="admin@nexoestudos.com.br"
+                  placeholder="estudos@nexoestudos.com.br"
                   required
                 />
               </div>

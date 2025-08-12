@@ -40,7 +40,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       setUser({
         id: '1',
         name: 'Administrador',
-        email: 'admin@nexoestudos.com.br',
+        email: 'estudos@nexoestudos.com.br',
         role: 'admin'
       })
       return true
