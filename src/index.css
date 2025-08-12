@@ -14,6 +14,11 @@ html, body {
   -moz-osx-font-smoothing: grayscale;
   background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
   min-height: 100vh;
+  transition: background 0.3s ease;
+}
+
+.dark body {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
 }
 
 * {
@@ -33,8 +38,16 @@ html, body {
     @apply border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300;
   }
   
+  .dark .btn-outline {
+    @apply border-2 border-blue-400 text-blue-400 hover:bg-blue-400 hover:text-gray-900;
+  }
+  
   .card {
     @apply bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 p-6 border border-white/20;
+  }
+  
+  .dark .card {
+    @apply bg-gray-800/90 backdrop-blur-sm border-gray-700/50 shadow-2xl;
   }
   
   .card-glass {
@@ -71,5 +84,25 @@ html, body {
   
   .stat-card {
     @apply bg-gradient-to-br from-white to-gray-50 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100;
+  }
+  
+  .dark .stat-card {
+    @apply bg-gradient-to-br from-gray-800 to-gray-900 border-gray-700;
+  }
+  
+  .dark .card-glass {
+    @apply bg-gray-800/20 border-gray-600/30;
+  }
+  
+  .dark .sidebar-item {
+    @apply hover:bg-gray-700/50;
+  }
+  
+  .dark .sidebar-item.active {
+    @apply bg-gray-700/70 text-white;
+  }
+  
+  .dark .input-field {
+    @apply bg-gray-800/80 border-gray-600 text-white placeholder-gray-400 focus:ring-blue-400;
   }
 }
