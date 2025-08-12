@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
+import { useStudyRequests } from '../context/StudyRequestContext';
 import { motion } from 'framer-motion';
 import { 
   BarChart3, 
@@ -18,15 +19,22 @@ import {
   ChevronRight,
   Filter,
   MapPin,
-  Clock
+  Clock,
+  Mail,
+  CheckCircle,
+  XCircle,
+  AlertCircle,
+  Eye
 } from 'lucide-react';
 
 const Dashboard: React.FC = () => {
   const { logout } = useAuth();
+  const { requests, updateRequestStatus } = useStudyRequests();
   const [activeTab, setActiveTab] = useState('overview');
 
   const sidebarItems = [
     { id: 'overview', label: 'Visão Geral', icon: BarChart3 },
+    { id: 'requests', label: 'Solicitações', icon: Mail },
     { id: 'projects', label: 'Estudos Elétricos', icon: Zap },
     { id: 'clients', label: 'Clientes', icon: Users },
     { id: 'reports', label: 'Relatórios', icon: FileText },
@@ -133,6 +141,30 @@ const Dashboard: React.FC = () => {
       case 'Baixa': return 'bg-green-100 text-green-800';
       default: return 'bg-gray-100 text-gray-800';
     }
+  };
+
+  const getRequestStatusColor = (status: string) => {
+    switch (status) {
+      case 'pending': return 'bg-yellow-100 text-yellow-800 border-yellow-200';
+      case 'reviewed': return 'bg-blue-100 text-blue-800 border-blue-200';
+      case 'approved': return 'bg-green-100 text-green-800 border-green-200';
+      case 'rejected': return 'bg-red-100 text-red-800 border-red-200';
+      default: return 'bg-gray-100 text-gray-800 border-gray-200';
+    }
+  };
+
+  const getRequestStatusLabel = (status: string) => {
+    switch (status) {
+      case 'pending': return 'Pendente';
+      case 'reviewed': return 'Em Análise';
+      case 'approved': return 'Aprovado';
+      case 'rejected': return 'Rejeitado';
+      default: return 'Desconhecido';
+    }
+  };
+
+  const handleStatusChange = (requestId: string, newStatus: 'pending' | 'reviewed' | 'approved' | 'rejected') => {
+    updateRequestStatus(requestId, newStatus);
   };
 
   return (
@@ -394,8 +426,143 @@ const Dashboard: React.FC = () => {
             </div>
           )}
 
+          {/* Requests Tab */}
+          {activeTab === 'requests' && (
+            <div className="space-y-8">
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="card"
+              >
+                <div className="flex items-center justify-between mb-6">
+                  <div>
+                    <h3 className="text-xl font-bold text-gray-900 mb-1">Solicitações de Estudos</h3>
+                    <p className="text-gray-600">Gerencie as solicitações recebidas através do site</p>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <span className="text-sm text-gray-600">
+                      Total: {requests.length} solicitações
+                    </span>
+                  </div>
+                </div>
+                
+                {requests.length === 0 ? (
+                  <div className="text-center py-16">
+                    <div className="w-20 h-20 bg-gradient-to-r from-blue-500 to-orange-500 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                      <Mail className="w-10 h-10 text-white" />
+                    </div>
+                    <h3 className="text-xl font-bold text-gray-900 mb-3">Nenhuma solicitação</h3>
+                    <p className="text-gray-600 max-w-md mx-auto">
+                      Quando clientes enviarem solicitações através do formulário do site, elas aparecerão aqui.
+                    </p>
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    {requests.map((request, index) => (
+                      <motion.div
+                        key={request.id}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: index * 0.1 }}
+                        className="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-lg transition-all duration-300"
+                      >
+                        <div className="flex items-start justify-between mb-4">
+                          <div className="flex-1">
+                            <div className="flex items-center gap-3 mb-2">
+                              <h4 className="text-lg font-semibold text-gray-900">{request.companyName}</h4>
+                              <span className={`inline-flex px-3 py-1 text-xs font-semibold rounded-full border ${getRequestStatusColor(request.status)}`}>
+                                {getRequestStatusLabel(request.status)}
+                              </span>
+                            </div>
+                            <div className="flex items-center gap-4 text-sm text-gray-600 mb-3">
+                              <div className="flex items-center gap-1">
+                                <Mail className="w-4 h-4" />
+                                {request.corporateEmail}
+                              </div>
+                              <div className="flex items-center gap-1">
+                                <Clock className="w-4 h-4" />
+                                {request.submittedAt.toLocaleDateString('pt-BR')}
+                              </div>
+                            </div>
+                            <div className="mb-3">
+                              <span className="inline-flex px-2 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-800">
+                                {request.projectType}
+                              </span>
+                            </div>
+                            <p className="text-gray-700 text-sm leading-relaxed">
+                              {request.projectDescription}
+                            </p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-center justify-between pt-4 border-t border-gray-100">
+                          <div className="flex items-center gap-2">
+                            <motion.button
+                              whileHover={{ scale: 1.02 }}
+                              whileTap={{ scale: 0.98 }}
+                              onClick={() => handleStatusChange(request.id, 'reviewed')}
+                              disabled={request.status === 'reviewed'}
+                              className={`flex items-center gap-2 px-3 py-2 text-xs font-medium rounded-lg transition-colors ${
+                                request.status === 'reviewed'
+                                  ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                                  : 'bg-blue-100 text-blue-700 hover:bg-blue-200'
+                              }`}
+                            >
+                              <Eye className="w-3 h-3" />
+                              Analisar
+                            </motion.button>
+                            
+                            <motion.button
+                              whileHover={{ scale: 1.02 }}
+                              whileTap={{ scale: 0.98 }}
+                              onClick={() => handleStatusChange(request.id, 'approved')}
+                              disabled={request.status === 'approved'}
+                              className={`flex items-center gap-2 px-3 py-2 text-xs font-medium rounded-lg transition-colors ${
+                                request.status === 'approved'
+                                  ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                                  : 'bg-green-100 text-green-700 hover:bg-green-200'
+                              }`}
+                            >
+                              <CheckCircle className="w-3 h-3" />
+                              Aprovar
+                            </motion.button>
+                            
+                            <motion.button
+                              whileHover={{ scale: 1.02 }}
+                              whileTap={{ scale: 0.98 }}
+                              onClick={() => handleStatusChange(request.id, 'rejected')}
+                              disabled={request.status === 'rejected'}
+                              className={`flex items-center gap-2 px-3 py-2 text-xs font-medium rounded-lg transition-colors ${
+                                request.status === 'rejected'
+                                  ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                                  : 'bg-red-100 text-red-700 hover:bg-red-200'
+                              }`}
+                            >
+                              <XCircle className="w-3 h-3" />
+                              Rejeitar
+                            </motion.button>
+                          </div>
+                          
+                          <motion.a
+                            href={`mailto:${request.corporateEmail}?subject=Re: Solicitação de Estudo - ${request.companyName}&body=Olá,%0D%0A%0D%0ARecebemos sua solicitação de estudo para o projeto "${request.projectType}".%0D%0A%0D%0AAtenciosamente,%0D%0ANexo Estudos Elétricos`}
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
+                            className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white text-xs font-medium rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-300"
+                          >
+                            <Mail className="w-3 h-3" />
+                            Responder
+                          </motion.a>
+                        </div>
+                      </motion.div>
+                    ))}
+                  </div>
+                )}
+              </motion.div>
+            </div>
+          )}
+
           {/* Other tabs content */}
-          {activeTab !== 'overview' && (
+          {activeTab !== 'overview' && activeTab !== 'requests' && (
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}

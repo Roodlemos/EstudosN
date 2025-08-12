@@ -27,12 +27,25 @@ import LanguageSelector from './LanguageSelector';
 import ThemeToggle from './ThemeToggle';
 import { useLanguage } from '../context/LanguageContext';
 import { useTheme } from '../context/ThemeContext';
+import { useStudyRequests } from '../context/StudyRequestContext';
+import { sendStudyRequestEmail } from '../services/emailService';
 
 const LandingPage: React.FC = () => {
   const { t } = useLanguage();
   const { isDark } = useTheme();
+  const { addRequest } = useStudyRequests();
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [activeSection, setActiveSection] = useState('inicio')
+  
+  // Estado do formulário
+  const [formData, setFormData] = useState({
+    companyName: '',
+    corporateEmail: '',
+    projectType: '',
+    projectDescription: ''
+  })
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitMessage, setSubmitMessage] = useState('')
 
   // Função para scroll suave até o formulário
   const scrollToForm = () => {
@@ -43,6 +56,101 @@ const LandingPage: React.FC = () => {
         block: 'center'
       })
     }
+  }
+
+  // Função para lidar com mudanças no formulário
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }))
+  }
+
+  // Função para validar o formulário
+  const validateForm = () => {
+    if (!formData.companyName.trim()) {
+      setSubmitMessage('Por favor, preencha o nome da empresa.')
+      return false
+    }
+    if (!formData.corporateEmail.trim()) {
+      setSubmitMessage('Por favor, preencha o email corporativo.')
+      return false
+    }
+    if (!formData.projectType) {
+      setSubmitMessage('Por favor, selecione o tipo de projeto.')
+      return false
+    }
+    if (!formData.projectDescription.trim()) {
+      setSubmitMessage('Por favor, descreva o projeto.')
+      return false
+    }
+    
+    // Validação básica de email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(formData.corporateEmail)) {
+      setSubmitMessage('Por favor, insira um email válido.')
+      return false
+    }
+    
+    return true
+  }
+
+  // Função para enviar solicitação de estudo
+  const handleRequestStudy = async (e: React.FormEvent) => {
+    e.preventDefault()
+    
+    if (!validateForm()) {
+      return
+    }
+
+    setIsSubmitting(true)
+    setSubmitMessage('')
+
+    try {
+      // Adicionar à dashboard
+      addRequest(formData)
+      
+      // Enviar email
+      const emailSent = await sendStudyRequestEmail(formData)
+      
+      if (emailSent) {
+        setSubmitMessage('Solicitação enviada com sucesso! Entraremos em contato em breve.')
+        setFormData({
+          companyName: '',
+          corporateEmail: '',
+          projectType: '',
+          projectDescription: ''
+        })
+      } else {
+        setSubmitMessage('Solicitação salva, mas houve um problema no envio do email. Nossa equipe foi notificada.')
+      }
+    } catch (error) {
+      console.error('Erro ao enviar solicitação:', error)
+      setSubmitMessage('Erro ao enviar solicitação. Tente novamente ou entre em contato conosco.')
+    } finally {
+      setIsSubmitting(false)
+      
+      // Limpar mensagem após 5 segundos
+      setTimeout(() => {
+        setSubmitMessage('')
+      }, 5000)
+    }
+  }
+
+  // Função para agendar reunião via WhatsApp
+  const handleScheduleMeeting = () => {
+    const message = `Olá! Gostaria de agendar uma reunião para discutir um projeto.
+
+Empresa: ${formData.companyName || 'Não informado'}
+Email: ${formData.corporateEmail || 'Não informado'}
+Tipo de Projeto: ${formData.projectType || 'Não informado'}
+Descrição: ${formData.projectDescription || 'Não informado'}
+
+Aguardo retorno para agendarmos!`
+
+    const whatsappUrl = `https://wa.me/5531972281758?text=${encodeURIComponent(message)}`
+    window.open(whatsappUrl, '_blank')
   }
 
   useEffect(() => {
@@ -556,7 +664,7 @@ const LandingPage: React.FC = () => {
                 {t.contact.form.title}
               </h3>
               
-              <form className="space-y-6">
+              <form onSubmit={handleRequestStudy} className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
@@ -564,8 +672,12 @@ const LandingPage: React.FC = () => {
                     </label>
                     <input
                       type="text"
+                      name="companyName"
+                      value={formData.companyName}
+                      onChange={handleInputChange}
                       className="w-full px-4 py-4 border border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 bg-gray-50 dark:bg-gray-700 focus:bg-white dark:focus:bg-gray-600 text-gray-900 dark:text-white"
                       placeholder={t.contact.form.companyName}
+                      disabled={isSubmitting}
                     />
                   </div>
                   
@@ -575,8 +687,12 @@ const LandingPage: React.FC = () => {
                     </label>
                     <input
                       type="email"
+                      name="corporateEmail"
+                      value={formData.corporateEmail}
+                      onChange={handleInputChange}
                       className="w-full px-4 py-4 border border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 bg-gray-50 dark:bg-gray-700 focus:bg-white dark:focus:bg-gray-600 text-gray-900 dark:text-white"
                       placeholder={t.contact.form.corporateEmail}
+                      disabled={isSubmitting}
                     />
                   </div>
                 </div>
@@ -585,12 +701,18 @@ const LandingPage: React.FC = () => {
                   <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
                     {t.contact.form.projectType}
                   </label>
-                  <select className="w-full px-4 py-4 border border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 bg-gray-50 dark:bg-gray-700 focus:bg-white dark:focus:bg-gray-600 text-gray-900 dark:text-white">
-                    <option>{t.contact.form.projectTypeOptions.select}</option>
-                    <option>{t.contact.form.projectTypeOptions.renewable}</option>
-                    <option>{t.contact.form.projectTypeOptions.transmission}</option>
-                    <option>{t.contact.form.projectTypeOptions.distribution}</option>
-                    <option>{t.contact.form.projectTypeOptions.others}</option>
+                  <select 
+                    name="projectType"
+                    value={formData.projectType}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-4 border border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 bg-gray-50 dark:bg-gray-700 focus:bg-white dark:focus:bg-gray-600 text-gray-900 dark:text-white"
+                    disabled={isSubmitting}
+                  >
+                    <option value="">{t.contact.form.projectTypeOptions.select}</option>
+                    <option value={t.contact.form.projectTypeOptions.renewable}>{t.contact.form.projectTypeOptions.renewable}</option>
+                    <option value={t.contact.form.projectTypeOptions.transmission}>{t.contact.form.projectTypeOptions.transmission}</option>
+                    <option value={t.contact.form.projectTypeOptions.distribution}>{t.contact.form.projectTypeOptions.distribution}</option>
+                    <option value={t.contact.form.projectTypeOptions.others}>{t.contact.form.projectTypeOptions.others}</option>
                   </select>
                 </div>
                 
@@ -599,26 +721,56 @@ const LandingPage: React.FC = () => {
                     {t.contact.form.projectDescription}
                   </label>
                   <textarea
+                    name="projectDescription"
+                    value={formData.projectDescription}
+                    onChange={handleInputChange}
                     rows={4}
                     className="w-full px-4 py-4 border border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 bg-gray-50 dark:bg-gray-700 focus:bg-white dark:focus:bg-gray-600 text-gray-900 dark:text-white resize-none"
                     placeholder={t.contact.form.projectDescriptionPlaceholder}
+                    disabled={isSubmitting}
                   ></textarea>
                 </div>
+
+                {/* Mensagem de feedback */}
+                {submitMessage && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className={`p-4 rounded-xl text-center font-medium ${
+                      submitMessage.includes('sucesso') 
+                        ? 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 border border-green-200 dark:border-green-700'
+                        : 'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300 border border-red-200 dark:border-red-700'
+                    }`}
+                  >
+                    {submitMessage}
+                  </motion.div>
+                )}
                 
                 <div className="grid md:grid-cols-2 gap-4 pt-4">
                   <motion.button
                     type="submit"
-                    className="bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold py-4 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
-                    whileHover={{ scale: 1.02, y: -2 }}
-                    whileTap={{ scale: 0.98 }}
+                    disabled={isSubmitting}
+                    className={`font-semibold py-4 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 ${
+                      isSubmitting 
+                        ? 'bg-gray-400 cursor-not-allowed' 
+                        : 'bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800'
+                    } text-white`}
+                    whileHover={!isSubmitting ? { scale: 1.02, y: -2 } : {}}
+                    whileTap={!isSubmitting ? { scale: 0.98 } : {}}
                   >
-                    {t.contact.form.requestStudyBtn}
+                    {isSubmitting ? 'Enviando...' : t.contact.form.requestStudyBtn}
                   </motion.button>
                   <motion.button
                     type="button"
-                    className="bg-gradient-to-r from-orange-500 to-orange-600 text-white font-semibold py-4 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
-                    whileHover={{ scale: 1.02, y: -2 }}
-                    whileTap={{ scale: 0.98 }}
+                    onClick={handleScheduleMeeting}
+                    disabled={isSubmitting}
+                    className={`font-semibold py-4 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 ${
+                      isSubmitting 
+                        ? 'bg-gray-400 cursor-not-allowed' 
+                        : 'bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700'
+                    } text-white`}
+                    whileHover={!isSubmitting ? { scale: 1.02, y: -2 } : {}}
+                    whileTap={!isSubmitting ? { scale: 0.98 } : {}}
                   >
                     {t.contact.form.scheduleMeetingBtn}
                   </motion.button>
