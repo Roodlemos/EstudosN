@@ -1,6 +1,6 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
-import { useTranslation } from 'react-i18next';
+import { useLanguage } from '../../context/LanguageContext';
 
 interface SEOHeadProps {
   title?: string;
@@ -21,8 +21,7 @@ const SEOHead: React.FC<SEOHeadProps> = ({
   type = 'website',
   section = 'home'
 }) => {
-  const { i18n } = useTranslation();
-  const currentLang = i18n.language;
+  const { language: currentLang } = useLanguage();
 
   // Default SEO values optimized for "nexo" keyword
   const defaultTitle = 'NEXO Estudos Elétricos - O Nexo da Inovação no Setor Energético';
