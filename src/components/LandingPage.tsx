@@ -97,7 +97,7 @@ const LandingPage: React.FC = () => {
               : 'bg-white/95 backdrop-blur-lg shadow-lg border-b border-gray-100'
         }`}
       >
-        <div className="container mx-auto px-6 py-5">
+        <div className="container mx-auto px-6 py-2">
           <div className="flex items-center justify-between">
             <motion.div 
               whileHover={{ scale: 1.05 }}
