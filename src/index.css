@@ -38,20 +38,22 @@ h1, h2, h3, h4, h5, h6 {
   overflow: visible;
 }
 
-/* Enhanced hero text styling */
+/* Hero title styling for uppercase text */
 .hero-title {
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
   letter-spacing: -0.02em;
+  line-height: 0.9;
+  text-align: center;
+  font-weight: 900;
 }
 
-.hero-subtitle {
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+.hero-title .text-white {
+  display: block;
+  margin-bottom: 0.5rem;
 }
 
-.hero-description {
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-  text-align: justify;
-  text-justify: inter-word;
+.hero-title .bg-clip-text {
+  display: block;
+  letter-spacing: -0.01em;
 }
 
 @layer components {

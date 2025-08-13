@@ -116,8 +116,8 @@ export const translations: Record<string, Translation> = {
       requestStudy: 'Solicitar Estudo'
     },
     hero: {
-      title: 'Onde a Energia do Futuro Nasce',
-      subtitle: 'Excelência técnica no setor elétrico brasileiro',
+      title: 'ONDE A ENERGIA\nDO FUTURO NASCE',
+      subtitle: 'EXCELÊNCIA TÉCNICA NO SETOR ELÉTRICO BRASILEIRO',
       description: 'A Nexo conecta visão inovadora e expertise consolidada. Soluções de alta performance em geração, transmissão e distribuição com precisão científica.',
       requestStudyBtn: 'Iniciar Projeto',
       learnMoreBtn: 'Descobrir Mais'
@@ -213,8 +213,8 @@ export const translations: Record<string, Translation> = {
       requestStudy: 'Request Study'
     },
     hero: {
-      title: 'Where Future Energy is Born',
-      subtitle: 'Technical excellence in Brazil\'s electrical sector',
+      title: 'WHERE FUTURE\nENERGY IS BORN',
+      subtitle: 'TECHNICAL EXCELLENCE IN BRAZIL\'S ELECTRICAL SECTOR',
       description: 'Nexo connects innovative vision and consolidated expertise. High-performance solutions in generation, transmission and distribution with scientific precision.',
       requestStudyBtn: 'Start Project',
       learnMoreBtn: 'Discover More'
@@ -310,8 +310,8 @@ export const translations: Record<string, Translation> = {
       requestStudy: 'Solicitar Estudio'
     },
     hero: {
-      title: 'Donde Nace la Energía del Futuro',
-      subtitle: 'Excelencia técnica en el sector eléctrico brasileño',
+      title: 'DONDE NACE LA ENERGÍA\nDEL FUTURO',
+      subtitle: 'EXCELENCIA TÉCNICA EN EL SECTOR ELÉCTRICO BRASILEÑO',
       description: 'Nexo conecta visión innovadora y experiencia consolidada. Soluciones de alto rendimiento en generación, transmisión y distribución con precisión científica.',
       requestStudyBtn: 'Iniciar Proyecto',
       learnMoreBtn: 'Descubrir Más'
