@@ -357,15 +357,14 @@ Aguardo retorno para agendarmos!`
                   Consultoria Especializada no SIN
                 </div>
                 
-                <h1 className="text-5xl lg:text-7xl font-bold leading-tight">
-                  <span className="text-white">{t.hero.title}</span>
-                  <br />
-                  <span className="bg-gradient-to-r from-blue-400 to-orange-400 bg-clip-text text-transparent">
+                <h1 className="text-5xl lg:text-7xl font-bold leading-tight text-center hero-title">
+                  <span className="text-white block mb-2">{t.hero.title}</span>
+                  <span className="bg-gradient-to-r from-blue-400 to-orange-400 bg-clip-text text-transparent block hero-subtitle">
                     {t.hero.subtitle}
                   </span>
                 </h1>
                 
-                <p className="text-xl text-white/90 leading-relaxed max-w-3xl mx-auto">
+                <p className="text-xl text-white/90 leading-relaxed max-w-3xl mx-auto px-4 hero-description">
                   {t.hero.description}
                 </p>
               </motion.div>

@@ -27,18 +27,31 @@ html, body {
 
 /* Fix for clipped text in titles */
 h1, h2, h3, h4, h5, h6 {
-  line-height: 1.2;
+  line-height: 1.3;
   overflow: visible;
-  padding-top: 0.1em;
-  padding-bottom: 0.1em;
+  padding: 0.1em 0;
 }
 
-/* Specific fixes for gradient text */
+/* Specific fix for gradient text */
 .bg-clip-text {
-  line-height: 1.3;
-  padding-top: 0.15em;
-  padding-bottom: 0.15em;
-  display: inline-block;
+  padding-bottom: 0.2em;
+  overflow: visible;
+}
+
+/* Enhanced hero text styling */
+.hero-title {
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  letter-spacing: -0.02em;
+}
+
+.hero-subtitle {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.hero-description {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  text-align: justify;
+  text-justify: inter-word;
 }
 
 @layer components {
