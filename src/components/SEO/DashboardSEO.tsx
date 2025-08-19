@@ -113,7 +113,6 @@ const DashboardSEO: React.FC<DashboardSEOProps> = ({
       <meta name="theme-color" content="#3B82F6" />
       
       {/* Preload critical resources */}
-      <link rel="preload" href="/src/assets/images/logo_nexo_branca.svg" as="image" type="image/svg+xml" />
       
       {/* DNS Prefetch for external resources */}
       <link rel="dns-prefetch" href="//fonts.googleapis.com" />

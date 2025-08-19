@@ -172,10 +172,17 @@ async function staleWhileRevalidate(request, cacheName) {
     return networkResponse;
   }).catch(error => {
     console.warn('[SW] Network request failed:', error);
-    return cachedResponse;
+    return null;
   });
   
-  return cachedResponse || fetchPromise;
+  // Return cached response immediately if available, otherwise wait for network
+  if (cachedResponse) {
+    // Update cache in background
+    fetchPromise.catch(() => {});
+    return cachedResponse;
+  }
+  
+  return fetchPromise;
 }
 
 // Get fallback response for failed requests
