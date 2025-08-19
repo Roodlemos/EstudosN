@@ -14,7 +14,20 @@ import {
   CheckSquare,
   Save,
   Plus,
-  AlertCircle
+  AlertCircle,
+  Calendar,
+  Flag,
+  Eye,
+  Users,
+  Activity,
+  FileText,
+  Link,
+  Image,
+  MoreHorizontal,
+  ChevronDown,
+  Star,
+  Bell,
+  ArrowRight
 } from 'lucide-react';
 import { useTheme } from '../../../context/ThemeContext';
 import ReactMarkdown from 'react-markdown';
@@ -44,6 +57,12 @@ const KanbanCardModal: React.FC<KanbanCardModalProps> = ({
   const [newChecklistItem, setNewChecklistItem] = useState('');
   const [newTag, setNewTag] = useState('');
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
+  const [showActions, setShowActions] = useState(false);
+  const [showLabels, setShowLabels] = useState(false);
+  const [showMembers, setShowMembers] = useState(false);
+  const [showDates, setShowDates] = useState(false);
+  const [isWatching, setIsWatching] = useState(false);
+  const [showDescription, setShowDescription] = useState(true);
   
   useEffect(() => {
     if (card) {
@@ -51,7 +70,22 @@ const KanbanCardModal: React.FC<KanbanCardModalProps> = ({
     }
   }, [card]);
 
-  if (!isOpen || !card || !editedCard) return null;
+  // Close dropdowns when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Element;
+      if (!target.closest('.actions-menu')) {
+        setShowActions(false);
+      }
+    };
+
+    if (showActions) {
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => document.removeEventListener('mousedown', handleClickOutside);
+    }
+  }, [showActions]);
+
+  if (!card || !editedCard) return null;
 
   const handleAddComment = () => {
     if (newComment.trim()) {
@@ -178,6 +212,15 @@ const KanbanCardModal: React.FC<KanbanCardModalProps> = ({
     }
   };
 
+  const getPriorityLabel = (priority: string) => {
+    switch (priority) {
+      case 'high': return 'Alta';
+      case 'medium': return 'Média';
+      case 'low': return 'Baixa';
+      default: return 'Desconhecida';
+    }
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -199,51 +242,81 @@ const KanbanCardModal: React.FC<KanbanCardModalProps> = ({
         <div className={`p-6 border-b ${isDark ? 'border-gray-700' : 'border-gray-200'}`}>
           <div className="flex items-start justify-between">
             <div className="flex-1">
-              {isEditing ? (
-                <input
-                  type="text"
-                  value={editedCard.title}
-                  onChange={(e) => setEditedCard({ ...editedCard, title: e.target.value })}
-                  className={`w-full text-xl font-bold mb-2 px-3 py-2 rounded-lg ${
-                    isDark ? 'bg-gray-700 text-white' : 'bg-gray-100 text-gray-900'
-                  }`}
-                />
-              ) : (
-                <h2 className="text-xl font-bold mb-2">{card.title}</h2>
-              )}
+              {/* Card Title */}
+              <div className="mb-4">
+                {isEditing ? (
+                  <input
+                    type="text"
+                    value={editedCard.title}
+                    onChange={(e) => setEditedCard({ ...editedCard, title: e.target.value })}
+                    className={`w-full text-2xl font-bold px-3 py-2 rounded-lg border-2 border-blue-500 focus:outline-none ${
+                      isDark ? 'bg-gray-700 text-white' : 'bg-white text-gray-900'
+                    }`}
+                    autoFocus
+                  />
+                ) : (
+                  <h1 
+                    className="text-2xl font-bold cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 p-2 rounded-lg transition-colors"
+                    onClick={() => setIsEditing(true)}
+                  >
+                    {card.title}
+                  </h1>
+                )}
+              </div>
               
-              <div className="flex flex-wrap items-center gap-2 mb-4">
-                <span className={`text-xs px-2 py-1 rounded-full ${getStatusColor(card.status)}`}>
-                  {getStatusLabel(card.status)}
-                </span>
-                <span className={`text-xs px-2 py-1 rounded-full ${getPriorityColor(card.priority)}`}>
-                  {card.priority === 'high' ? 'Alta' : card.priority === 'medium' ? 'Média' : 'Baixa'}
-                </span>
-                <div className={`flex items-center gap-1 text-xs ${
+              {/* Card Meta Info */}
+              <div className="flex flex-wrap items-center gap-3 mb-4">
+                <div className="flex items-center gap-2">
+                  <span className={`text-sm px-3 py-1 rounded-full font-medium ${getStatusColor(card.status)}`}>
+                    {getStatusLabel(card.status)}
+                  </span>
+                  <span className={`text-sm px-3 py-1 rounded-full font-medium ${getPriorityColor(card.priority)}`}>
+                    <Flag className="w-3 h-3 inline mr-1" />
+                    {getPriorityLabel(card.priority)}
+                  </span>
+                </div>
+                
+                {/* Due Date */}
+                <div className={`flex items-center gap-1 text-sm px-3 py-1 rounded-lg ${
                   isOverdue(card.dueDate) 
-                    ? 'text-red-600' 
+                    ? 'bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-200' 
                     : isDueSoon(card.dueDate) 
-                    ? 'text-yellow-600' 
-                    : isDark ? 'text-gray-400' : 'text-gray-600'
+                    ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/50 dark:text-yellow-200'
+                    : isDark ? 'bg-gray-700 text-gray-300' : 'bg-gray-100 text-gray-700'
                 }`}>
-                  <Clock className="w-3 h-3" />
+                  <Calendar className="w-4 h-4" />
                   {isEditing ? (
                     <input
                       type="date"
                       value={editedCard.dueDate.split('T')[0]}
                       onChange={(e) => setEditedCard({ ...editedCard, dueDate: e.target.value })}
-                      className={`px-2 py-1 rounded ${
-                        isDark ? 'bg-gray-700 text-white' : 'bg-gray-100 text-gray-900'
+                      className={`bg-transparent border-none focus:outline-none ${
+                        isDark ? 'text-white' : 'text-gray-900'
                       }`}
                     />
                   ) : (
                     <>
                       <span>{formatDate(card.dueDate)}</span>
-                      {isOverdue(card.dueDate) && <span className="text-red-600 font-medium ml-1">Atrasado</span>}
-                      {isDueSoon(card.dueDate) && <span className="text-yellow-600 font-medium ml-1">Próximo</span>}
+                      {isOverdue(card.dueDate) && <span className="font-medium ml-1">• Atrasado</span>}
+                      {isDueSoon(card.dueDate) && <span className="font-medium ml-1">• Próximo</span>}
                     </>
                   )}
                 </div>
+                
+                {/* Watch Button */}
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => setIsWatching(!isWatching)}
+                  className={`flex items-center gap-1 text-sm px-3 py-1 rounded-lg transition-colors ${
+                    isWatching 
+                      ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-200'
+                      : isDark ? 'bg-gray-700 text-gray-300 hover:bg-gray-600' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
+                >
+                  <Eye className="w-4 h-4" />
+                  {isWatching ? 'Observando' : 'Observar'}
+                </motion.button>
               </div>
             </div>
             
@@ -254,9 +327,10 @@ const KanbanCardModal: React.FC<KanbanCardModalProps> = ({
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={handleSaveChanges}
-                    className={`p-2 rounded-lg ${isDark ? 'bg-blue-600 hover:bg-blue-700' : 'bg-blue-500 hover:bg-blue-600'} text-white`}
+                    className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors"
                   >
-                    <Save className="w-4 h-4" />
+                    <Save className="w-4 h-4 inline mr-2" />
+                    Salvar
                   </motion.button>
                   <motion.button
                     whileHover={{ scale: 1.05 }}
@@ -265,48 +339,76 @@ const KanbanCardModal: React.FC<KanbanCardModalProps> = ({
                       setIsEditing(false);
                       setEditedCard(JSON.parse(JSON.stringify(card)));
                     }}
-                    className={`p-2 rounded-lg ${isDark ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-200 hover:bg-gray-300'}`}
+                    className={`px-4 py-2 rounded-lg font-medium transition-colors ${isDark ? 'bg-gray-700 hover:bg-gray-600 text-white' : 'bg-gray-200 hover:bg-gray-300 text-gray-700'}`}
                   >
-                    <X className="w-4 h-4" />
+                    Cancelar
                   </motion.button>
                 </>
               ) : (
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => setIsEditing(true)}
-                  className={`p-2 rounded-lg ${isDark ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-200 hover:bg-gray-300'}`}
-                >
-                  <Edit className="w-4 h-4" />
-                </motion.button>
+                <>
+                  {/* Actions Menu */}
+                  <div className="relative actions-menu">
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={() => setShowActions(!showActions)}
+                      className={`p-2 rounded-lg ${isDark ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-200 hover:bg-gray-300'}`}
+                    >
+                      <MoreHorizontal className="w-4 h-4" />
+                    </motion.button>
+                    
+                    {showActions && (
+                      <div className={`absolute right-0 top-full mt-2 w-48 rounded-lg shadow-lg border z-50 ${
+                        isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
+                      }`}>
+                        <div className="py-2">
+                          <button
+                            onClick={() => {
+                              setIsEditing(true);
+                              setShowActions(false);
+                            }}
+                            className={`w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-2`}
+                          >
+                            <Edit className="w-4 h-4" />
+                            Editar cartão
+                          </button>
+                          <button
+                            onClick={() => {
+                              onDuplicate(card.id);
+                              setShowActions(false);
+                            }}
+                            className={`w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-2`}
+                          >
+                            <Copy className="w-4 h-4" />
+                            Duplicar
+                          </button>
+                          <button
+                            onClick={() => {
+                              onArchive(card.id);
+                              setShowActions(false);
+                            }}
+                            className={`w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-2 text-yellow-600`}
+                          >
+                            <Archive className="w-4 h-4" />
+                            Arquivar
+                          </button>
+                          <hr className={`my-2 ${isDark ? 'border-gray-700' : 'border-gray-200'}`} />
+                          <button
+                            onClick={() => {
+                              setShowConfirmDelete(true);
+                              setShowActions(false);
+                            }}
+                            className={`w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-2 text-red-600`}
+                          >
+                            <Trash2 className="w-4 h-4" />
+                            Excluir
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </>
               )}
-              
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => onDuplicate(card.id)}
-                className={`p-2 rounded-lg ${isDark ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-200 hover:bg-gray-300'}`}
-              >
-                <Copy className="w-4 h-4" />
-              </motion.button>
-              
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => onArchive(card.id)}
-                className={`p-2 rounded-lg ${isDark ? 'bg-yellow-900/80 hover:bg-yellow-800' : 'bg-yellow-100 hover:bg-yellow-200'} ${isDark ? 'text-yellow-200' : 'text-yellow-800'}`}
-              >
-                <Archive className="w-4 h-4" />
-              </motion.button>
-              
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => setShowConfirmDelete(true)}
-                className={`p-2 rounded-lg ${isDark ? 'bg-red-900/80 hover:bg-red-800' : 'bg-red-100 hover:bg-red-200'} ${isDark ? 'text-red-200' : 'text-red-800'}`}
-              >
-                <Trash2 className="w-4 h-4" />
-              </motion.button>
               
               <motion.button
                 whileHover={{ scale: 1.05 }}
@@ -321,35 +423,100 @@ const KanbanCardModal: React.FC<KanbanCardModalProps> = ({
         </div>
         
         {/* Card Content */}
-        <div className="p-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Left Column - Main Content */}
-          <div className="lg:col-span-2 space-y-6">
+        <div className="flex flex-1 overflow-hidden">
+          {/* Main Content */}
+          <div className="flex-1 overflow-y-auto p-6 space-y-6">
+            {/* Card Info Bar */}
+            <div className="flex flex-wrap items-center gap-4 mb-6">
+              {/* Status */}
+              <div className="flex items-center gap-2">
+                <div className={`w-3 h-3 rounded-full ${
+                  card.status === 'todo' ? 'bg-gray-400' :
+                  card.status === 'in_progress' ? 'bg-blue-500' :
+                  card.status === 'review' ? 'bg-yellow-500' :
+                  'bg-green-500'
+                }`} />
+                <span className={`text-sm font-medium ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+                  {getStatusLabel(card.status)}
+                </span>
+              </div>
+              
+              {/* Priority */}
+              <div className="flex items-center gap-2">
+                <Flag className={`w-4 h-4 ${
+                  card.priority === 'high' ? 'text-red-500' :
+                  card.priority === 'medium' ? 'text-yellow-500' :
+                  'text-green-500'
+                }`} />
+                <span className={`text-sm font-medium ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+                  {getPriorityLabel(card.priority)}
+                </span>
+              </div>
+              
+              {/* Due Date */}
+              {card.dueDate && (
+                <div className={`flex items-center gap-2 px-2 py-1 rounded text-sm ${
+                  isOverdue(card.dueDate) ? 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300' :
+                  isDueSoon(card.dueDate) ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300' :
+                  'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300'
+                }`}>
+                  <Calendar className="w-4 h-4" />
+                  <span>{formatDate(card.dueDate)}</span>
+                  {isOverdue(card.dueDate) && <span className="font-semibold">ATRASADO</span>}
+                  {isDueSoon(card.dueDate) && <span className="font-semibold">EM BREVE</span>}
+                </div>
+              )}
+            </div>
+            
             {/* Description */}
-            <div>
-              <h3 className={`text-sm font-semibold mb-2 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>Descrição</h3>
-              {isEditing ? (
-                <textarea
-                  value={editedCard.description}
-                  onChange={(e) => setEditedCard({ ...editedCard, description: e.target.value })}
-                  rows={6}
-                  className={`w-full px-3 py-2 rounded-lg ${
-                    isDark ? 'bg-gray-700 text-white' : 'bg-gray-100 text-gray-900'
-                  }`}
-                  placeholder="Descrição detalhada do cartão..."
-                />
-              ) : (
-                <div className={`prose ${isDark ? 'prose-invert' : ''} max-w-none`}>
-                  <ReactMarkdown>{card.description}</ReactMarkdown>
+            <div className="mb-6">
+              <div className="flex items-center justify-between mb-3">
+                <h3 className={`text-lg font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                  <FileText className="w-5 h-5 inline mr-2" />
+                  Descrição
+                </h3>
+                {!isEditing && (
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => setShowDescription(!showDescription)}
+                    className={`p-1 rounded ${isDark ? 'hover:bg-gray-700' : 'hover:bg-gray-200'}`}
+                  >
+                    <ChevronDown className={`w-4 h-4 transition-transform ${showDescription ? 'rotate-180' : ''}`} />
+                  </motion.button>
+                )}
+              </div>
+              
+              {showDescription && (
+                <div>
+                  {isEditing ? (
+                    <textarea
+                      value={editedCard.description}
+                      onChange={(e) => setEditedCard({ ...editedCard, description: e.target.value })}
+                      rows={6}
+                      className={`w-full px-3 py-2 rounded-lg ${
+                        isDark ? 'bg-gray-700 text-white' : 'bg-gray-100 text-gray-900'
+                      }`}
+                      placeholder="Descrição detalhada do cartão..."
+                    />
+                  ) : (
+                    <div className={`prose ${isDark ? 'prose-invert' : ''} max-w-none`}>
+                      <ReactMarkdown>{card.description}</ReactMarkdown>
+                    </div>
+                  )}
                 </div>
               )}
             </div>
             
             {/* Checklist */}
-            <div>
-              <div className="flex items-center justify-between mb-2">
-                <h3 className={`text-sm font-semibold ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>Checklist</h3>
+            <div className="mb-6">
+              <div className="flex items-center justify-between mb-3">
+                <h3 className={`text-lg font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                  <CheckSquare className="w-5 h-5 inline mr-2" />
+                  Checklist
+                </h3>
                 {editedCard.checklist && editedCard.checklist.length > 0 && (
-                  <span className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                  <span className={`text-sm font-medium ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
                     {editedCard.checklist.filter(item => item.completed).length}/{editedCard.checklist.length} concluídos
                   </span>
                 )}
@@ -417,8 +584,11 @@ const KanbanCardModal: React.FC<KanbanCardModalProps> = ({
             </div>
             
             {/* Comments */}
-            <div>
-              <h3 className={`text-sm font-semibold mb-3 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>Comentários</h3>
+            <div className="mb-6">
+              <h3 className={`text-lg font-semibold mb-3 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                <MessageSquare className="w-5 h-5 inline mr-2" />
+                Comentários
+              </h3>
               
               <div className="space-y-4 mb-4">
                 {card.comments.length > 0 ? (
@@ -430,15 +600,15 @@ const KanbanCardModal: React.FC<KanbanCardModalProps> = ({
                       <div className="flex items-center justify-between mb-2">
                         <div className="flex items-center gap-2">
                           <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white text-sm font-medium">
-                            {comment.author.split(' ').map(name => name[0]).join('')}
+                            {comment.user?.split(' ').map(name => name[0]).join('') || 'U'}
                           </div>
-                          <span className="font-medium">{comment.author}</span>
+                          <span className="font-medium">{comment.user || 'Usuário'}</span>
                         </div>
                         <span className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-                          {formatDateTime(comment.timestamp)}
+                          {formatDateTime(comment.createdAt)}
                         </span>
                       </div>
-                      <p className="text-sm">{comment.content}</p>
+                      <p className="text-sm">{comment.text}</p>
                     </div>
                   ))
                 ) : (
@@ -476,10 +646,13 @@ const KanbanCardModal: React.FC<KanbanCardModalProps> = ({
           </div>
           
           {/* Right Column - Sidebar */}
-          <div className="space-y-6">
+          <div className={`w-80 border-l p-6 space-y-6 ${isDark ? 'border-gray-700 bg-gray-800/50' : 'border-gray-200 bg-gray-50/50'}`}>
             {/* Assignees */}
             <div>
-              <h3 className={`text-sm font-semibold mb-2 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>Responsáveis</h3>
+              <h3 className={`text-lg font-semibold mb-3 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                <Users className="w-5 h-5 inline mr-2" />
+                Responsáveis
+              </h3>
               <div className="space-y-2">
                 {card.assignees.map((assignee, index) => (
                   <div 
@@ -508,7 +681,10 @@ const KanbanCardModal: React.FC<KanbanCardModalProps> = ({
             
             {/* Tags */}
             <div>
-              <h3 className={`text-sm font-semibold mb-2 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>Etiquetas</h3>
+              <h3 className={`text-lg font-semibold mb-3 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                <Tag className="w-5 h-5 inline mr-2" />
+                Etiquetas
+              </h3>
               <div className="flex flex-wrap gap-2 mb-2">
                 {editedCard.tags.map((tag, index) => (
                   <div 
@@ -552,7 +728,10 @@ const KanbanCardModal: React.FC<KanbanCardModalProps> = ({
             
             {/* Attachments */}
             <div>
-              <h3 className={`text-sm font-semibold mb-2 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>Anexos</h3>
+              <h3 className={`text-lg font-semibold mb-3 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                <Paperclip className="w-5 h-5 inline mr-2" />
+                Anexos
+              </h3>
               <div className="space-y-2">
                 {card.attachments > 0 ? (
                   <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>{card.attachments} anexos</p>
@@ -575,7 +754,10 @@ const KanbanCardModal: React.FC<KanbanCardModalProps> = ({
             
             {/* Activity */}
             <div>
-              <h3 className={`text-sm font-semibold mb-2 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>Atividade</h3>
+              <h3 className={`text-lg font-semibold mb-3 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                <Activity className="w-5 h-5 inline mr-2" />
+                Atividade
+              </h3>
               <div className="space-y-2">
                 <div className={`flex items-center gap-2 text-xs ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
                   <span>Criado em:</span>
@@ -586,6 +768,140 @@ const KanbanCardModal: React.FC<KanbanCardModalProps> = ({
                   <span>{formatDate(card.updatedAt)}</span>
                 </div>
               </div>
+            </div>
+          </div>
+          
+          {/* Sidebar - Actions */}
+          <div className={`w-64 border-l p-4 ${isDark ? 'border-gray-700 bg-gray-800' : 'border-gray-200 bg-gray-50'}`}>
+            <h3 className={`text-sm font-semibold mb-4 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+              ADICIONAR AO CARTÃO
+            </h3>
+            
+            <div className="space-y-2">
+              {/* Members */}
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => setShowMembers(!showMembers)}
+                className={`w-full flex items-center gap-3 p-3 rounded-lg text-left transition-colors ${
+                  isDark ? 'bg-gray-700 hover:bg-gray-600 text-white' : 'bg-white hover:bg-gray-100 text-gray-700'
+                }`}
+              >
+                <Users className="w-4 h-4" />
+                <span className="text-sm font-medium">Membros</span>
+              </motion.button>
+              
+              {/* Labels */}
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => setShowLabels(!showLabels)}
+                className={`w-full flex items-center gap-3 p-3 rounded-lg text-left transition-colors ${
+                  isDark ? 'bg-gray-700 hover:bg-gray-600 text-white' : 'bg-white hover:bg-gray-100 text-gray-700'
+                }`}
+              >
+                <Tag className="w-4 h-4" />
+                <span className="text-sm font-medium">Etiquetas</span>
+              </motion.button>
+              
+              {/* Checklist */}
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => {}}
+                className={`w-full flex items-center gap-3 p-3 rounded-lg text-left transition-colors ${
+                  isDark ? 'bg-gray-700 hover:bg-gray-600 text-white' : 'bg-white hover:bg-gray-100 text-gray-700'
+                }`}
+              >
+                <CheckSquare className="w-4 h-4" />
+                <span className="text-sm font-medium">Checklist</span>
+              </motion.button>
+              
+              {/* Dates */}
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => setShowDates(!showDates)}
+                className={`w-full flex items-center gap-3 p-3 rounded-lg text-left transition-colors ${
+                  isDark ? 'bg-gray-700 hover:bg-gray-600 text-white' : 'bg-white hover:bg-gray-100 text-gray-700'
+                }`}
+              >
+                <Calendar className="w-4 h-4" />
+                <span className="text-sm font-medium">Datas</span>
+              </motion.button>
+              
+              {/* Attachments */}
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => {}}
+                className={`w-full flex items-center gap-3 p-3 rounded-lg text-left transition-colors ${
+                  isDark ? 'bg-gray-700 hover:bg-gray-600 text-white' : 'bg-white hover:bg-gray-100 text-gray-700'
+                }`}
+              >
+                <Paperclip className="w-4 h-4" />
+                <span className="text-sm font-medium">Anexo</span>
+              </motion.button>
+            </div>
+            
+            <h3 className={`text-sm font-semibold mb-4 mt-6 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+              AÇÕES
+            </h3>
+            
+            <div className="space-y-2">
+              {/* Move */}
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => {}}
+                className={`w-full flex items-center gap-3 p-3 rounded-lg text-left transition-colors ${
+                  isDark ? 'bg-gray-700 hover:bg-gray-600 text-white' : 'bg-white hover:bg-gray-100 text-gray-700'
+                }`}
+              >
+                <ArrowRight className="w-4 h-4" />
+                <span className="text-sm font-medium">Mover</span>
+              </motion.button>
+              
+              {/* Copy */}
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => onDuplicate(card.id)}
+                className={`w-full flex items-center gap-3 p-3 rounded-lg text-left transition-colors ${
+                  isDark ? 'bg-gray-700 hover:bg-gray-600 text-white' : 'bg-white hover:bg-gray-100 text-gray-700'
+                }`}
+              >
+                <Copy className="w-4 h-4" />
+                <span className="text-sm font-medium">Copiar</span>
+              </motion.button>
+              
+              {/* Watch */}
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => setIsWatching(!isWatching)}
+                className={`w-full flex items-center gap-3 p-3 rounded-lg text-left transition-colors ${
+                  isWatching 
+                    ? (isDark ? 'bg-blue-900/50 hover:bg-blue-800/50 text-blue-300' : 'bg-blue-100 hover:bg-blue-200 text-blue-700')
+                    : (isDark ? 'bg-gray-700 hover:bg-gray-600 text-white' : 'bg-white hover:bg-gray-100 text-gray-700')
+                }`}
+              >
+                {isWatching ? <Bell className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                <span className="text-sm font-medium">{isWatching ? 'Observando' : 'Observar'}</span>
+              </motion.button>
+              
+              {/* Archive */}
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => onArchive(card.id)}
+                className={`w-full flex items-center gap-3 p-3 rounded-lg text-left transition-colors ${
+                  isDark ? 'bg-gray-700 hover:bg-gray-600 text-white' : 'bg-white hover:bg-gray-100 text-gray-700'
+                }`}
+              >
+                <Archive className="w-4 h-4" />
+                <span className="text-sm font-medium">Arquivar</span>
+              </motion.button>
             </div>
           </div>
         </div>

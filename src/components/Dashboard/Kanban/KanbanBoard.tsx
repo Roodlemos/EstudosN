@@ -73,9 +73,15 @@ const KanbanBoard: React.FC = () => {
     toggleSortDirection
   } = useKanban();
   
+  const { addColumn, updateColumn, reorderColumns } = useKanban();
+  
   // Estados locais adicionais
   const [draggedCard, setDraggedCard] = useState<KanbanCard | null>(null);
   const [showFilters, setShowFilters] = useState(false);
+  const [editingColumn, setEditingColumn] = useState<string | null>(null);
+  const [editingTitle, setEditingTitle] = useState('');
+  const [draggedColumn, setDraggedColumn] = useState<number | null>(null);
+  const [showColorPicker, setShowColorPicker] = useState<string | null>(null);
   
   // Funções para manipulação de arrastar e soltar
   const handleDragStart = (card: KanbanCard) => {
@@ -180,6 +186,76 @@ const KanbanBoard: React.FC = () => {
     return new Date(dateString).toLocaleDateString('pt-BR');
   };
 
+  // Funções para edição de colunas
+  const startEditingColumn = (columnId: string, currentTitle: string) => {
+    setEditingColumn(columnId);
+    setEditingTitle(currentTitle);
+  };
+
+  const saveColumnTitle = (columnId: string) => {
+    if (editingTitle.trim()) {
+      const columnToUpdate = columns.find(col => col.id === columnId);
+      if (columnToUpdate) {
+        updateColumn({
+          ...columnToUpdate,
+          title: editingTitle.trim()
+        });
+      }
+    }
+    setEditingColumn(null);
+    setEditingTitle('');
+  };
+
+  const cancelEditingColumn = () => {
+    setEditingColumn(null);
+    setEditingTitle('');
+  };
+
+  // Funções para drag and drop de colunas
+  const handleColumnDragStart = (e: React.DragEvent, columnIndex: number) => {
+    setDraggedColumn(columnIndex);
+    e.dataTransfer.effectAllowed = 'move';
+  };
+
+  const handleColumnDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+  };
+
+  const handleColumnDrop = (e: React.DragEvent, targetIndex: number) => {
+    e.preventDefault();
+    if (draggedColumn !== null && draggedColumn !== targetIndex) {
+      reorderColumns(draggedColumn, targetIndex);
+    }
+    setDraggedColumn(null);
+  };
+
+  // Função para mudar cor da coluna
+  const handleColorChange = (columnId: string, colorClass: string) => {
+    const columnToUpdate = columns.find(col => col.id === columnId);
+    if (columnToUpdate) {
+      updateColumn({
+        ...columnToUpdate,
+        color: colorClass
+      });
+    }
+    setShowColorPicker(null);
+  };
+
+  // Cores disponíveis para as colunas
+  const availableColors = [
+    'bg-gray-500',
+    'bg-red-500',
+    'bg-orange-500',
+    'bg-yellow-500',
+    'bg-green-500',
+    'bg-blue-500',
+    'bg-indigo-500',
+    'bg-purple-500',
+    'bg-pink-500',
+    'bg-teal-500'
+  ];
+
   const isOverdue = (dueDate: string) => {
     return new Date(dueDate) < new Date();
   };
@@ -237,6 +313,42 @@ const KanbanBoard: React.FC = () => {
             <Filter className="w-4 h-4" />
             Filtros
           </motion.button>
+          
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={() => openNewCardModal()}
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors duration-300 ${
+              isDark
+                ? 'bg-blue-600 hover:bg-blue-700 text-white'
+                : 'bg-blue-600 hover:bg-blue-700 text-white'
+            }`}
+          >
+            <Plus className="w-4 h-4" />
+            Novo Card
+          </motion.button>
+          
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={() => {
+              const newColumn = {
+                title: `Nova Coluna ${columns.length + 1}`,
+                wip: 5,
+                color: 'gray' as const,
+                icon: 'CircleCheck' as const
+              };
+              addColumn(newColumn);
+            }}
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors duration-300 ${
+              isDark
+                ? 'bg-green-600 hover:bg-green-700 text-white'
+                : 'bg-green-600 hover:bg-green-700 text-white'
+            }`}
+          >
+            <Plus className="w-4 h-4" />
+            Nova Coluna
+          </motion.button>
         </div>
       </div>
 
@@ -256,8 +368,17 @@ const KanbanBoard: React.FC = () => {
                 isDark ? 'text-gray-300' : 'text-gray-700'
               }`}>Prioridade:</label>
               <select
-                value={kanbanFilter}
-                onChange={(e) => setKanbanFilter(e.target.value)}
+                value={filterPriority.length === 0 ? 'all' : filterPriority[0]}
+                onChange={(e) => {
+                  if (e.target.value === 'all') {
+                    // Clear all filters
+                    filterPriority.forEach(priority => toggleFilterPriority(priority));
+                  } else {
+                    // Clear existing and set new
+                    filterPriority.forEach(priority => toggleFilterPriority(priority));
+                    toggleFilterPriority(e.target.value);
+                  }
+                }}
                 className={`px-3 py-1 rounded border text-sm ${
                   isDark
                     ? 'bg-gray-700 border-gray-600 text-white'
@@ -292,25 +413,25 @@ const KanbanBoard: React.FC = () => {
             </div>
             
             <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
-              className={`flex items-center gap-1 px-3 py-1 rounded border text-sm ${
-                isDark
-                  ? 'bg-gray-700 border-gray-600 text-white hover:bg-gray-600'
-                  : 'bg-white border-gray-300 text-gray-900 hover:bg-gray-50'
-              }`}
-            >
-              {sortOrder === 'asc' ? <ArrowRight className="w-3 h-3" /> : <ArrowLeft className="w-3 h-3" />}
-              {sortOrder === 'asc' ? 'Crescente' : 'Decrescente'}
-            </motion.button>
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => toggleSortDirection()}
+                className={`flex items-center gap-1 px-3 py-1 rounded border text-sm ${
+                  isDark
+                    ? 'bg-gray-700 border-gray-600 text-white hover:bg-gray-600'
+                    : 'bg-white border-gray-300 text-gray-900 hover:bg-gray-50'
+                }`}
+              >
+                {sortDirection === 'asc' ? <ArrowRight className="w-3 h-3" /> : <ArrowLeft className="w-3 h-3" />}
+                {sortDirection === 'asc' ? 'Crescente' : 'Decrescente'}
+              </motion.button>
           </div>
         </motion.div>
       )}
 
       {/* Kanban Board */}
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-        {columns.map((column) => {
+      <div className={`grid grid-cols-1 gap-6 ${columns.length <= 4 ? 'lg:grid-cols-4' : columns.length === 5 ? 'lg:grid-cols-5' : 'lg:grid-cols-6'}`}>
+        {columns.map((column, columnIndex) => {
           const statusConfig = {
             todo: { title: 'A Fazer', color: 'bg-gray-500', icon: Flag },
             in_progress: { title: 'Em Andamento', color: 'bg-blue-500', icon: Clock },
@@ -322,30 +443,117 @@ const KanbanBoard: React.FC = () => {
           const cards = getCardsByStatus(column.id);
           
           return (
-            <div key={column.id} className="flex flex-col">
+            <div 
+              key={column.id} 
+              className={`flex flex-col ${draggedColumn === columnIndex ? 'opacity-50' : ''}`}
+              draggable
+              onDragStart={(e) => handleColumnDragStart(e, columnIndex)}
+              onDragOver={handleColumnDragOver}
+              onDrop={(e) => handleColumnDrop(e, columnIndex)}
+            >
               {/* Column Header */}
               <div className={`flex items-center justify-between p-4 rounded-t-lg border-b-2 transition-colors duration-300 ${
                 isDark ? 'bg-gray-800 border-gray-700' : 'bg-gray-50 border-gray-200'
               }`}>
-                <div className="flex items-center gap-2">
-                  <div className={`w-3 h-3 rounded-full ${statusConfig.color}`}></div>
-                  <h3 className={`font-semibold transition-colors duration-300 ${
-                    isDark ? 'text-white' : 'text-gray-900'
-                  }`}>{column.title || statusConfig.title}</h3>
+                <div className="flex items-center gap-2 flex-1">
+                    <div className={`w-3 h-3 rounded-full ${column.color || statusConfig.color}`}></div>
+                  {editingColumn === column.id ? (
+                    <div className="flex items-center gap-2 flex-1">
+                      <input
+                        type="text"
+                        value={editingTitle}
+                        onChange={(e) => setEditingTitle(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') {
+                            saveColumnTitle(column.id);
+                          } else if (e.key === 'Escape') {
+                            cancelEditingColumn();
+                          }
+                        }}
+                        className={`font-semibold bg-transparent border-b-2 border-blue-500 outline-none transition-colors duration-300 ${
+                          isDark ? 'text-white' : 'text-gray-900'
+                        }`}
+                        autoFocus
+                      />
+                      <motion.button
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                        onClick={() => saveColumnTitle(column.id)}
+                        className={`p-1 rounded transition-colors duration-300 ${
+                          isDark ? 'hover:bg-gray-600 text-green-400' : 'hover:bg-gray-200 text-green-600'
+                        }`}
+                      >
+                        <Save className="w-3 h-3" />
+                      </motion.button>
+                      <motion.button
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                        onClick={cancelEditingColumn}
+                        className={`p-1 rounded transition-colors duration-300 ${
+                          isDark ? 'hover:bg-gray-600 text-red-400' : 'hover:bg-gray-200 text-red-600'
+                        }`}
+                      >
+                        <X className="w-3 h-3" />
+                      </motion.button>
+                    </div>
+                  ) : (
+                    <>
+                      <h3 className={`font-semibold transition-colors duration-300 ${
+                        isDark ? 'text-white' : 'text-gray-900'
+                      }`}>{column.title || statusConfig.title}</h3>
+                      <motion.button
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                        onClick={() => startEditingColumn(column.id, column.title || statusConfig.title)}
+                        className={`p-1 rounded transition-colors duration-300 ${
+                          isDark ? 'hover:bg-gray-600 text-gray-400' : 'hover:bg-gray-200 text-gray-600'
+                        }`}
+                      >
+                        <Edit className="w-3 h-3" />
+                      </motion.button>
+                      
+                      {/* Color Picker Button */}
+                      <div className="relative">
+                        <motion.button
+                          whileHover={{ scale: 1.1 }}
+                          whileTap={{ scale: 0.9 }}
+                          onClick={() => setShowColorPicker(showColorPicker === column.id ? null : column.id)}
+                          className={`p-1 rounded transition-colors duration-300 ${
+                            isDark ? 'hover:bg-gray-600 text-gray-400' : 'hover:bg-gray-200 text-gray-600'
+                          }`}
+                        >
+                          <div className={`w-3 h-3 rounded-full ${column.color || statusConfig.color}`}></div>
+                        </motion.button>
+                        
+                        {/* Color Picker Dropdown */}
+                        {showColorPicker === column.id && (
+                          <div className={`absolute top-8 right-0 z-50 p-2 rounded-lg shadow-lg border ${
+                            isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
+                          }`}>
+                            <div className="grid grid-cols-5 gap-1">
+                              {availableColors.map((color) => (
+                                <motion.button
+                                  key={color}
+                                  whileHover={{ scale: 1.1 }}
+                                  whileTap={{ scale: 0.9 }}
+                                  onClick={() => handleColorChange(column.id, color)}
+                                   className={`w-6 h-6 rounded-full ${color} border-2 ${
+                                     column.color === color 
+                                       ? 'border-white shadow-lg' 
+                                       : 'border-transparent'
+                                   }`}
+                                />
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </>
+                  )}
                   <span className={`text-sm px-2 py-1 rounded-full transition-colors duration-300 ${
                     isDark ? 'bg-gray-700 text-gray-300' : 'bg-gray-200 text-gray-600'
                   }`}>{cards.length}{column.wip > 0 ? `/${column.wip}` : ''}</span>
                 </div>
-                <motion.button
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                  onClick={() => openNewCardModal()}
-                  className={`p-1 rounded transition-colors duration-300 ${
-                    isDark ? 'hover:bg-gray-700 text-gray-400' : 'hover:bg-gray-200 text-gray-600'
-                  }`}
-                >
-                  <Plus className="w-4 h-4" />
-                </motion.button>
               </div>
               
               {/* Column Content */}

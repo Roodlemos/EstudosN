@@ -34,6 +34,7 @@ interface KanbanContextType {
   addColumn: (column: Omit<KanbanColumn, 'id'>) => void;
   updateColumn: (column: KanbanColumn) => void;
   deleteColumn: (columnId: string) => void;
+  reorderColumns: (sourceIndex: number, destinationIndex: number) => void;
   
   // Modal Actions
   openCardModal: (card: KanbanCard) => void;
@@ -376,6 +377,15 @@ export const KanbanProvider: React.FC<KanbanProviderProps> = ({ children }) => {
       addNotification(`Coluna "${columnToDelete.title}" excluída`, 'warning');
     }
   };
+
+  const reorderColumns = (sourceIndex: number, destinationIndex: number) => {
+    const newColumns = Array.from(columns);
+    const [reorderedColumn] = newColumns.splice(sourceIndex, 1);
+    newColumns.splice(destinationIndex, 0, reorderedColumn);
+    
+    setColumns(newColumns);
+    addNotification('Colunas reordenadas', 'info');
+  };
   
   // Modal Actions
   const openCardModal = (card: KanbanCard) => {
@@ -515,6 +525,7 @@ export const KanbanProvider: React.FC<KanbanProviderProps> = ({ children }) => {
     addColumn,
     updateColumn,
     deleteColumn,
+    reorderColumns,
     
     // Modal Actions
     openCardModal,
