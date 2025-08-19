@@ -36,7 +36,8 @@ const NewKanbanCardModal: React.FC<NewKanbanCardModalProps> = ({
   const [checklist, setChecklist] = useState<Array<{id: number, text: string, completed: boolean}>>([]);
   const [newChecklistItem, setNewChecklistItem] = useState('');
   
-  if (!isOpen) return null;
+  // Get column status based on selected column
+  const columnStatus = columns.find(col => col.id === selectedColumn)?.status || 'todo';
   
   const handleAddTag = () => {
     if (newTag.trim() && !tags.includes(newTag.trim())) {
@@ -80,7 +81,7 @@ const NewKanbanCardModal: React.FC<NewKanbanCardModalProps> = ({
       checklist
     };
     
-    onAddCard(newCard);
+    onAdd(newCard);
     resetForm();
     onClose();
   };

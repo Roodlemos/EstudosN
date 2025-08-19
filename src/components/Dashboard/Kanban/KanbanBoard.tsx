@@ -339,7 +339,7 @@ const KanbanBoard: React.FC = () => {
                 <motion.button
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
-                  onClick={() => openNewCardModal(column.id)}
+                  onClick={() => openNewCardModal()}
                   className={`p-1 rounded transition-colors duration-300 ${
                     isDark ? 'hover:bg-gray-700 text-gray-400' : 'hover:bg-gray-200 text-gray-600'
                   }`}
