@@ -39,6 +39,7 @@ const KanbanBoard: React.FC = () => {
     // Estados
     cards,
     columns,
+    users,
     selectedCard,
     isCardModalOpen,
     isNewCardModalOpen,
