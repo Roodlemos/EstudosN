@@ -30,14 +30,15 @@ const NewKanbanCardModal: React.FC<NewKanbanCardModalProps> = ({
   const [description, setDescription] = useState('');
   const [selectedColumn, setSelectedColumn] = useState(columns[0]?.id || '');
   const [priority, setPriority] = useState<'high' | 'medium' | 'low'>('medium');
-  const [dueDate, setDueDate] = useState('');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
   const [tags, setTags] = useState<string[]>([]);
   const [newTag, setNewTag] = useState('');
   const [checklist, setChecklist] = useState<Array<{id: number, text: string, completed: boolean}>>([]);
   const [newChecklistItem, setNewChecklistItem] = useState('');
   
-  // Get column status based on selected column
-  const columnStatus = columns.find(col => col.id === selectedColumn)?.status || 'todo';
+  // Get column status based on selected column (the column ID is the status)
+  const columnStatus = selectedColumn || 'todo';
   
   const handleAddTag = () => {
     if (newTag.trim() && !tags.includes(newTag.trim())) {
@@ -74,7 +75,7 @@ const NewKanbanCardModal: React.FC<NewKanbanCardModalProps> = ({
       priority,
       assignees: [{ name: 'Usuário Atual', avatar: 'UA', color: 'bg-blue-500' }],
       tags,
-      dueDate: dueDate || new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+      dueDate: endDate || new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
       comments: [],
       attachments: 0,
       progress: 0,
@@ -90,7 +91,8 @@ const NewKanbanCardModal: React.FC<NewKanbanCardModalProps> = ({
     setTitle('');
     setDescription('');
     setPriority('medium');
-    setDueDate('');
+    setStartDate('');
+    setEndDate('');
     setTags([]);
     setNewTag('');
     setChecklist([]);
@@ -189,8 +191,27 @@ const NewKanbanCardModal: React.FC<NewKanbanCardModalProps> = ({
             />
           </div>
           
-          {/* Priority & Due Date */}
+          {/* Column & Priority */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className={`block text-sm font-medium mb-1 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+                Coluna
+              </label>
+              <select
+                value={selectedColumn}
+                onChange={(e) => setSelectedColumn(e.target.value)}
+                className={`w-full px-3 py-2 rounded-lg ${
+                  isDark ? 'bg-gray-700 text-white' : 'bg-gray-100 text-gray-900'
+                }`}
+              >
+                {columns.map((column) => (
+                  <option key={column.id} value={column.id}>
+                    {column.title}
+                  </option>
+                ))}
+              </select>
+            </div>
+            
             <div>
               <label className={`block text-sm font-medium mb-1 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
                 Prioridade
@@ -207,17 +228,37 @@ const NewKanbanCardModal: React.FC<NewKanbanCardModalProps> = ({
                 <option value="low">Baixa</option>
               </select>
             </div>
-            
+          </div>
+          
+          {/* Start Date & End Date */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className={`block text-sm font-medium mb-1 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
-                Data de Vencimento
+                Data de Início
               </label>
               <div className="flex items-center gap-2">
                 <Clock className={`w-4 h-4 ${isDark ? 'text-gray-400' : 'text-gray-500'}`} />
                 <input
                   type="date"
-                  value={dueDate}
-                  onChange={(e) => setDueDate(e.target.value)}
+                  value={startDate}
+                  onChange={(e) => setStartDate(e.target.value)}
+                  className={`flex-1 px-3 py-2 rounded-lg ${
+                    isDark ? 'bg-gray-700 text-white' : 'bg-gray-100 text-gray-900'
+                  }`}
+                />
+              </div>
+            </div>
+            
+            <div>
+              <label className={`block text-sm font-medium mb-1 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+                Data de Término
+              </label>
+              <div className="flex items-center gap-2">
+                <Clock className={`w-4 h-4 ${isDark ? 'text-gray-400' : 'text-gray-500'}`} />
+                <input
+                  type="date"
+                  value={endDate}
+                  onChange={(e) => setEndDate(e.target.value)}
                   className={`flex-1 px-3 py-2 rounded-lg ${
                     isDark ? 'bg-gray-700 text-white' : 'bg-gray-100 text-gray-900'
                   }`}
