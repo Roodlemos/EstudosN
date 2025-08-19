@@ -10,12 +10,28 @@ export default defineConfig({
     assetsDir: 'assets',
     sourcemap: false,
     minify: 'terser',
-    target: 'es2015',
+    target: 'esnext',
     cssCodeSplit: true,
+    // Fix for GitHub Pages MIME type issues
     rollupOptions: {
       output: {
-        // Advanced code splitting for better caching and loading
-        manualChunks: {
+        format: 'es',
+        // Ensure proper file extensions for modules
+        entryFileNames: 'js/[name]-[hash].js',
+        chunkFileNames: 'js/[name]-[hash].js',
+        assetFileNames: (assetInfo) => {
+          const info = assetInfo.name?.split('.') || [];
+          const ext = info[info.length - 1];
+          if (/png|jpe?g|svg|gif|tiff|bmp|ico/i.test(ext)) {
+            return `images/[name]-[hash][extname]`;
+          }
+          if (/css/i.test(ext)) {
+            return `css/[name]-[hash][extname]`;
+          }
+          return `assets/[name]-[hash][extname]`;
+        },
+          // Advanced code splitting for better caching and loading
+          manualChunks: {
           // Vendor chunks
           'react-vendor': ['react', 'react-dom'],
           'router-vendor': ['react-router-dom'],
@@ -31,25 +47,6 @@ export default defineConfig({
           'dashboard-reports': ['./src/components/Dashboard/Reports.tsx'],
           'dashboard-calendar': ['./src/components/Dashboard/Calendar.tsx'],
           'dashboard-settings': ['./src/components/Dashboard/Settings.tsx']
-        },
-        // Optimize chunk file names for better caching
-        chunkFileNames: (chunkInfo) => {
-          const facadeModuleId = chunkInfo.facadeModuleId
-            ? chunkInfo.facadeModuleId.split('/').pop()?.replace('.tsx', '').replace('.ts', '')
-            : 'chunk';
-          return `js/${facadeModuleId}-[hash].js`;
-        },
-        entryFileNames: 'js/[name]-[hash].js',
-        assetFileNames: (assetInfo) => {
-          const info = assetInfo.name?.split('.') || [];
-          const ext = info[info.length - 1];
-          if (/png|jpe?g|svg|gif|tiff|bmp|ico/i.test(ext)) {
-            return `images/[name]-[hash][extname]`;
-          }
-          if (/css/i.test(ext)) {
-            return `css/[name]-[hash][extname]`;
-          }
-          return `assets/[name]-[hash][extname]`;
         }
       },
     },

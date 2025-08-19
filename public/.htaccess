@@ -67,13 +67,18 @@ Redirect 301 /estudos-eletricos /
 ErrorDocument 404 /index.html
 ErrorDocument 500 /index.html
 
-# MIME Types for better SEO
+# MIME Types for better SEO and ES Modules support
 <IfModule mod_mime.c>
     AddType application/javascript .js
+    AddType application/javascript .mjs
     AddType text/css .css
     AddType image/svg+xml .svg
     AddType application/json .json
     AddType application/ld+json .jsonld
+    # Ensure proper MIME type for ES modules
+    <FilesMatch "\.(js|mjs)$">
+        Header set Content-Type "application/javascript; charset=utf-8"
+    </FilesMatch>
 </IfModule>
 
 # Prevent access to sensitive files
