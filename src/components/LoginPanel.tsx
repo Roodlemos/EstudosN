@@ -34,7 +34,7 @@ const LoginPanel: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary-500 via-purple-600 to-pink-500 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-blue-600 via-blue-700 to-orange-500 flex items-center justify-center p-4">
       {/* Background Animation */}
       <div className="absolute inset-0 overflow-hidden">
         {[...Array(6)].map((_, i) => (
@@ -96,9 +96,9 @@ const LoginPanel: React.FC = () => {
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.4 }}
-              className="w-16 h-16 bg-gradient-to-br from-primary-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4"
+              className="w-24 h-24 flex items-center justify-center mx-auto mb-4 p-2"
             >
-              <Lock className="w-8 h-8 text-white" />
+              <img src="/src/assets/images/iLogo1.svg" alt="NEXO Logo" className="w-full h-full object-contain" />
             </motion.div>
             
             <motion.h1
@@ -161,7 +161,7 @@ const LoginPanel: React.FC = () => {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-300"
+                  className="w-full pl-10 pr-4 py-3 border border-gray-400 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 bg-gray-50"
                   placeholder="estudos@nexoestudos.com.br"
                   required
                 />
@@ -177,12 +177,12 @@ const LoginPanel: React.FC = () => {
                 Senha
               </label>
               <div className="relative">
-                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-500" />
                 <input
                   type={showPassword ? 'text' : 'password'}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-300"
+                  className="w-full pl-10 pr-12 py-3 border border-gray-400 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 bg-gray-50"
                   placeholder="••••••••"
                   required
                 />
@@ -205,12 +205,12 @@ const LoginPanel: React.FC = () => {
               <label className="flex items-center">
                 <input
                   type="checkbox"
-                  className="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500"
+                  className="w-4 h-4 text-blue-600 border-gray-400 rounded focus:ring-blue-500"
                 />
                 <span className="ml-2 text-sm text-gray-600">Lembrar-me</span>
               </label>
               
-              <a href="#" className="text-sm text-primary-600 hover:text-primary-700 transition-colors duration-300">
+              <a href="#" className="text-sm text-orange-600 hover:text-orange-700 transition-colors duration-300">
                 Esqueceu a senha?
               </a>
             </motion.div>
@@ -223,7 +223,7 @@ const LoginPanel: React.FC = () => {
               whileTap={{ scale: 0.98 }}
               type="submit"
               disabled={isLoading}
-              className="w-full bg-gradient-to-r from-primary-600 to-purple-600 text-white font-semibold py-3 px-6 rounded-lg hover:from-primary-700 hover:to-purple-700 transition-all duration-300 transform hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+              className="w-full bg-gradient-to-r from-orange-600 to-orange-500 text-white font-semibold py-3 px-6 rounded-lg hover:from-blue-700 hover:to-orange-600 transition-all duration-300 transform hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
             >
               {isLoading ? (
                 <>
@@ -245,7 +245,7 @@ const LoginPanel: React.FC = () => {
           >
             <p className="text-sm text-gray-600">
               Não tem acesso administrativo?{' '}
-              <Link to="/" className="text-primary-600 hover:text-primary-700 font-medium transition-colors duration-300">
+              <Link to="/" className="text-blue-600 hover:text-blue-700 font-medium transition-colors duration-300">
                 Voltar ao site principal
               </Link>
             </p>

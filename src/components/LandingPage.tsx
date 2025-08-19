@@ -252,7 +252,7 @@ Aguardo retorno para agendarmos!`
                   whileTap={{ scale: 0.95 }}
                   className="bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
                 >
-                  Portal Admin
+                  Login
                 </motion.button>
               </Link>
             </div>

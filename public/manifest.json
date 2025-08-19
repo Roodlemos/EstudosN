@@ -1,0 +1,151 @@
+{
+  "name": "NEXO Dashboard - Estudos Elétricos",
+  "short_name": "NEXO Dashboard",
+  "description": "Sistema completo de gestão para estudos elétricos - NEXO Estudos Elétricos",
+  "version": "1.0.0",
+  "start_url": "/EstudosN/dashboard",
+  "scope": "/EstudosN/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "theme_color": "#2563EB",
+  "background_color": "#FFFFFF",
+  "lang": "pt-BR",
+  "dir": "ltr",
+  "categories": ["business", "productivity", "utilities"],
+  "screenshots": [
+    {
+      "src": "/EstudosN/assets/screenshots/desktop-dashboard.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "platform": "wide",
+      "label": "Dashboard principal do NEXO"
+    },
+    {
+      "src": "/EstudosN/assets/screenshots/mobile-dashboard.png",
+      "sizes": "390x844",
+      "type": "image/png",
+      "platform": "narrow",
+      "label": "Dashboard mobile do NEXO"
+    }
+  ],
+  "icons": [
+    {
+      "src": "/EstudosN/icon-72x72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/EstudosN/icon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/EstudosN/icon-128x128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/EstudosN/icon-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/EstudosN/icon-152x152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/EstudosN/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/EstudosN/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/EstudosN/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Dashboard",
+      "short_name": "Dashboard",
+      "description": "Acesso rápido ao dashboard principal",
+      "url": "/EstudosN/dashboard",
+      "icons": [
+        {
+          "src": "/EstudosN/icon-192x192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Solicitações",
+      "short_name": "Requests",
+      "description": "Gerenciar solicitações de estudos",
+      "url": "/EstudosN/dashboard#requests",
+      "icons": [
+        {
+          "src": "/EstudosN/icon-192x192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Projetos",
+      "short_name": "Projects",
+      "description": "Visualizar projetos em andamento",
+      "url": "/EstudosN/dashboard#projects",
+      "icons": [
+        {
+          "src": "/EstudosN/icon-192x192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Relatórios",
+      "short_name": "Reports",
+      "description": "Acessar relatórios e análises",
+      "url": "/EstudosN/dashboard#reports",
+      "icons": [
+        {
+          "src": "/EstudosN/icon-192x192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false,
+  "edge_side_panel": {
+    "preferred_width": 400
+  },
+  "launch_handler": {
+    "client_mode": "navigate-existing"
+  },
+  "handle_links": "preferred",
+  "capture_links": "existing-client-navigate",
+  "protocol_handlers": [
+    {
+      "protocol": "web+nexo",
+      "url": "/EstudosN/dashboard?action=%s"
+    }
+  ]
+}

@@ -11,9 +11,32 @@
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
     <meta name="googlebot" content="index, follow" />
     <meta name="bingbot" content="index, follow" />
-    <meta name="theme-color" content="#1e40af" />
-    <meta name="msapplication-TileColor" content="#1e40af" />
-    <meta name="application-name" content="Nexo" />
+    <meta name="theme-color" content="#2563EB" />
+    <meta name="msapplication-TileColor" content="#2563EB" />
+    <meta name="application-name" content="NEXO Dashboard" />
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="./manifest.json" />
+    
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" sizes="72x72" href="/EstudosN/icon-72x72.png" />
+    <link rel="apple-touch-icon" sizes="96x96" href="/EstudosN/icon-96x96.png" />
+    <link rel="apple-touch-icon" sizes="128x128" href="/EstudosN/icon-128x128.png" />
+    <link rel="apple-touch-icon" sizes="144x144" href="/EstudosN/icon-144x144.png" />
+    <link rel="apple-touch-icon" sizes="152x152" href="/EstudosN/icon-152x152.png" />
+    <link rel="apple-touch-icon" sizes="192x192" href="/EstudosN/icon-192x192.png" />
+    <link rel="apple-touch-icon" sizes="384x384" href="/EstudosN/icon-384x384.png" />
+    <link rel="apple-touch-icon" sizes="512x512" href="/EstudosN/icon-512x512.png" />
+    
+    <!-- Apple PWA Meta Tags -->
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="NEXO Dashboard" />
+    
+    <!-- Microsoft PWA Meta Tags -->
+    <meta name="msapplication-starturl" content="/EstudosN/dashboard" />
+    <meta name="msapplication-config" content="/EstudosN/browserconfig.xml" />
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
@@ -114,5 +137,54 @@
   <body>
     <div id="root"></div>
     <script type="module" src="./src/main.tsx"></script>
+    <!-- Service Worker Registration -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/EstudosN/sw.js')
+            .then((registration) => {
+              console.log('[SW] Service Worker registered successfully:', registration.scope);
+              
+              // Check for updates
+              registration.addEventListener('updatefound', () => {
+                const newWorker = registration.installing;
+                if (newWorker) {
+                  newWorker.addEventListener('statechange', () => {
+                    if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                      // New content is available, show update notification
+                      if (confirm('Nova versão disponível! Deseja atualizar?')) {
+                        window.location.reload();
+                      }
+                    }
+                  });
+                }
+              });
+            })
+            .catch((error) => {
+              console.error('[SW] Service Worker registration failed:', error);
+            });
+        });
+      }
+    </script>
+    
+    <!-- PWA Install Prompt -->
+    <script>
+      let deferredPrompt;
+      
+      window.addEventListener('beforeinstallprompt', (e) => {
+        // Prevent the mini-infobar from appearing on mobile
+        e.preventDefault();
+        // Stash the event so it can be triggered later
+        deferredPrompt = e;
+        
+        // Show install button or notification
+        console.log('[PWA] Install prompt available');
+      });
+      
+      window.addEventListener('appinstalled', () => {
+        console.log('[PWA] App was installed');
+        deferredPrompt = null;
+      });
+    </script>
   </body>
 </html>
