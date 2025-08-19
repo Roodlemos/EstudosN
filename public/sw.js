@@ -8,9 +8,7 @@ const STATIC_ASSETS = [
   '/EstudosN/',
   '/EstudosN/index.html',
   '/EstudosN/manifest.json',
-  '/EstudosN/assets/css/index.css',
-  '/EstudosN/assets/js/index.js',
-  // Add other critical assets
+  '/EstudosN/vite.svg'
 ];
 
 // Dynamic assets patterns
@@ -158,11 +156,34 @@ async function networkFirst(request, cacheName) {
 async function staleWhileRevalidate(request, cacheName) {
   const cachedResponse = await caches.match(request);
   
-  const fetchPromise = fetch(request).then(async (networkResponse) => {
-    if (networkResponse.ok) {
+  // If we have a cached response, return it immediately and update in background
+  if (cachedResponse) {
+    // Update cache in background without blocking
+    fetch(request).then(async (networkResponse) => {
+      if (networkResponse && networkResponse.ok) {
+        try {
+          const cache = await caches.open(cacheName);
+          // Clone the response before caching
+          const responseClone = networkResponse.clone();
+          await cache.put(request, responseClone);
+        } catch (error) {
+          console.warn('[SW] Failed to cache response:', error);
+        }
+      }
+    }).catch(error => {
+      console.warn('[SW] Background fetch failed:', error);
+    });
+    
+    return cachedResponse;
+  }
+  
+  // No cached response, fetch from network
+  try {
+    const networkResponse = await fetch(request);
+    if (networkResponse && networkResponse.ok) {
       try {
         const cache = await caches.open(cacheName);
-        // Clone the response before using it
+        // Clone the response before caching
         const responseClone = networkResponse.clone();
         await cache.put(request, responseClone);
       } catch (error) {
@@ -170,19 +191,10 @@ async function staleWhileRevalidate(request, cacheName) {
       }
     }
     return networkResponse;
-  }).catch(error => {
+  } catch (error) {
     console.warn('[SW] Network request failed:', error);
     return null;
-  });
-  
-  // Return cached response immediately if available, otherwise wait for network
-  if (cachedResponse) {
-    // Update cache in background
-    fetchPromise.catch(() => {});
-    return cachedResponse;
   }
-  
-  return fetchPromise;
 }
 
 // Get fallback response for failed requests
