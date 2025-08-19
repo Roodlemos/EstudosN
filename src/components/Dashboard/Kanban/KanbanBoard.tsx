@@ -109,8 +109,8 @@ const KanbanBoard: React.FC = () => {
     }
     
     // Filtrar por prioridade
-    if (filterPriority !== 'all') {
-      filtered = filtered.filter(card => card.priority === filterPriority);
+    if (filterPriority.length > 0) {
+      filtered = filtered.filter(card => filterPriority.includes(card.priority));
     }
     
     // Ordenar
