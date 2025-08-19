@@ -27,11 +27,10 @@ import {
 } from 'lucide-react';
 import { useTheme } from '../../../context/ThemeContext';
 import { useKanban } from '../../../context/KanbanContext';
+import { KanbanCard } from '../../../types/kanban';
 import KanbanCardModal from './KanbanCardModal';
 import NewKanbanCardModal from './NewKanbanCardModal';
 import DeleteConfirmationModal from '../Modals/DeleteConfirmationModal';
-
-// Interface KanbanCard já está definida em src/types/kanban.ts
 
 const KanbanBoard: React.FC = () => {
   const { isDark } = useTheme();

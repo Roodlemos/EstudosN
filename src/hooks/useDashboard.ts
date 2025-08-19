@@ -1,5 +1,5 @@
 import { useState, useCallback, useMemo, useEffect } from 'react';
-import { dashboardSections } from '../components/Dashboard';
+import { dashboardSections } from '../components/Dashboard/index';
 
 // Custom hook for Dashboard state management and optimization
 export const useDashboard = () => {

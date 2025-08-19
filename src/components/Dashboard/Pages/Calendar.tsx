@@ -31,7 +31,6 @@ import {
   Repeat,
   Grid,
   List,
-  Today,
   ArrowLeft,
   ArrowRight
 } from 'lucide-react';
@@ -93,6 +92,7 @@ const Calendar: React.FC = () => {
       startDate: '2024-12-17T17:00:00',
       endDate: '2024-12-17T17:00:00',
       allDay: false,
+      isOnline: false,
       attendees: ['carlos.engenheiro@empresa.com', 'ana.coordenadora@empresa.com'],
       organizer: 'sistema@empresa.com',
       reminders: [60, 1440], // 1 hour and 1 day before
@@ -505,7 +505,7 @@ const Calendar: React.FC = () => {
             <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
               <CalendarIcon className="w-6 h-6 text-white" />
             </div>
-            <Today className="w-5 h-5 text-blue-500" />
+            <CalendarIcon className="w-5 h-5 text-blue-500" />
           </div>
           <div>
             <p className={`text-sm font-medium mb-1 transition-colors duration-300 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>Eventos Hoje</p>
@@ -661,7 +661,7 @@ const Calendar: React.FC = () => {
                 onClick={goToToday}
                 className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-300 text-sm"
               >
-                <Today className="w-4 h-4 inline mr-2" />
+                <CalendarIcon className="w-4 h-4 inline mr-2" />
                 Ir para Hoje
               </motion.button>
             </div>

@@ -9,6 +9,17 @@ export { default as Reports } from './Pages/Reports';
 export { default as Calendar } from './Pages/Calendar';
 export { default as Settings } from './Pages/Settings';
 
+// Import components for internal use
+import Overview from './Pages/Overview';
+import Requests from './Pages/Requests';
+import KanbanBoard from './Kanban/KanbanBoard';
+import Projects from './Pages/Projects';
+import Clients from './Pages/Clients';
+import Financial from './Pages/Financial';
+import Reports from './Pages/Reports';
+import Calendar from './Pages/Calendar';
+import Settings from './Pages/Settings';
+
 // Types
 export interface DashboardSection {
   id: string;
