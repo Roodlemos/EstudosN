@@ -17,18 +17,20 @@ interface NewKanbanCardModalProps {
   onAdd: (card: Omit<KanbanCard, 'id' | 'createdAt' | 'updatedAt'>) => void;
   columns: KanbanColumn[];
   users: KanbanUser[];
+  preselectedColumn?: string;
 }
 
 const NewKanbanCardModal: React.FC<NewKanbanCardModalProps> = ({
   onClose,
   onAdd,
   columns,
-  users
+  users,
+  preselectedColumn
 }) => {
   const { isDark } = useTheme();
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [selectedColumn, setSelectedColumn] = useState(columns[0]?.id || '');
+  const [selectedColumn, setSelectedColumn] = useState(preselectedColumn || columns[0]?.id || '');
   const [priority, setPriority] = useState<'high' | 'medium' | 'low'>('medium');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');

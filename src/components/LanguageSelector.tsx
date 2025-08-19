@@ -1,11 +1,11 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback, memo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { useTheme } from '../context/ThemeContext';
 import { languages } from '../i18n/translations';
 
-const LanguageSelector: React.FC = () => {
+const LanguageSelector: React.FC = memo(() => {
   const { language, setLanguage } = useLanguage();
   const { isDark } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
@@ -24,15 +24,19 @@ const LanguageSelector: React.FC = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const handleLanguageChange = (langCode: string) => {
+  const handleLanguageChange = useCallback((langCode: string) => {
     setLanguage(langCode);
     setIsOpen(false);
-  };
+  }, [setLanguage]);
+
+  const toggleDropdown = useCallback(() => {
+    setIsOpen(prev => !prev);
+  }, []);
 
   return (
     <div className="relative" ref={dropdownRef}>
       <motion.button
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={toggleDropdown}
         className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-300 ${
           isDark 
             ? 'bg-gray-700/80 hover:bg-gray-600/80 text-gray-200 border border-gray-600/50' 
@@ -98,6 +102,8 @@ const LanguageSelector: React.FC = () => {
       </AnimatePresence>
     </div>
   );
-};
+});
+
+LanguageSelector.displayName = 'LanguageSelector';
 
 export default LanguageSelector;

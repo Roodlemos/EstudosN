@@ -59,10 +59,10 @@ export const dashboardSections: DashboardSection[] = [
   },
   {
     id: 'kanban',
-    label: 'Kanban',
-    component: KanbanBoard,
-    icon: Kanban,
-    description: 'Quadro Kanban para gestão de projetos'
+  label: 'Fluxo',
+  component: KanbanBoard,
+  icon: Kanban,
+  description: 'Quadro de Fluxo para gestão de projetos'
   },
   {
     id: 'projects',

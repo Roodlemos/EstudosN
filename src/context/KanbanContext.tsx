@@ -10,6 +10,7 @@ interface KanbanContextType {
   isNewCardModalOpen: boolean;
   isDeleteModalOpen: boolean;
   cardToDelete: KanbanCard | null;
+  selectedColumnForNewCard: string | null;
   searchQuery: string;
   filterPriority: string[];
   sortBy: string;
@@ -39,7 +40,7 @@ interface KanbanContextType {
   // Modal Actions
   openCardModal: (card: KanbanCard) => void;
   closeCardModal: () => void;
-  openNewCardModal: () => void;
+  openNewCardModal: (columnId?: string) => void;
   closeNewCardModal: () => void;
   openDeleteModal: (card: KanbanCard) => void;
   closeDeleteModal: () => void;
@@ -182,28 +183,28 @@ export const KanbanProvider: React.FC<KanbanProviderProps> = ({ children }) => {
       id: 'todo',
       title: 'A Fazer',
       wip: 5,
-      color: 'gray',
+      color: 'bg-gray-500',
       icon: 'CircleCheck'
     },
     {
       id: 'in_progress',
       title: 'Em Andamento',
       wip: 3,
-      color: 'blue',
+      color: 'bg-blue-500',
       icon: 'Clock'
     },
     {
       id: 'review',
       title: 'Revisão',
       wip: 3,
-      color: 'yellow',
+      color: 'bg-yellow-500',
       icon: 'Eye'
     },
     {
       id: 'done',
       title: 'Concluído',
       wip: 0, // 0 means no limit
-      color: 'green',
+      color: 'bg-green-500',
       icon: 'CheckCircle'
     }
   ]);
@@ -250,6 +251,7 @@ export const KanbanProvider: React.FC<KanbanProviderProps> = ({ children }) => {
   const [isNewCardModalOpen, setIsNewCardModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [cardToDelete, setCardToDelete] = useState<KanbanCard | null>(null);
+  const [selectedColumnForNewCard, setSelectedColumnForNewCard] = useState<string | null>(null);
   
   // Filter states
   const [searchQuery, setSearchQuery] = useState('');
@@ -366,15 +368,20 @@ export const KanbanProvider: React.FC<KanbanProviderProps> = ({ children }) => {
   const deleteColumn = (columnId: string) => {
     const columnToDelete = columns.find(column => column.id === columnId);
     if (columnToDelete) {
-      // Check if there are cards in this column
+      // Remove all cards in this column
       const cardsInColumn = cards.filter(card => card.status === columnId);
       if (cardsInColumn.length > 0) {
-        addNotification(`Não é possível excluir a coluna "${columnToDelete.title}" porque ela contém cartões`, 'error');
-        return;
+        setCards(cards.filter(card => card.status !== columnId));
       }
       
       setColumns(columns.filter(column => column.id !== columnId));
-      addNotification(`Coluna "${columnToDelete.title}" excluída`, 'warning');
+      
+      const cardCount = cardsInColumn.length;
+      const message = cardCount > 0 
+        ? `Coluna "${columnToDelete.title}" e ${cardCount} cartão${cardCount > 1 ? 's' : ''} excluído${cardCount > 1 ? 's' : ''}`
+        : `Coluna "${columnToDelete.title}" excluída`;
+      
+      addNotification(message, 'warning');
     }
   };
 
@@ -398,12 +405,14 @@ export const KanbanProvider: React.FC<KanbanProviderProps> = ({ children }) => {
     setTimeout(() => setSelectedCard(null), 300); // Delay to allow animation
   };
   
-  const openNewCardModal = () => {
+  const openNewCardModal = (columnId?: string) => {
+    setSelectedColumnForNewCard(columnId || null);
     setIsNewCardModalOpen(true);
   };
   
   const closeNewCardModal = () => {
     setIsNewCardModalOpen(false);
+    setSelectedColumnForNewCard(null);
   };
   
   const openDeleteModal = (card: KanbanCard) => {
@@ -507,6 +516,7 @@ export const KanbanProvider: React.FC<KanbanProviderProps> = ({ children }) => {
     isNewCardModalOpen,
     isDeleteModalOpen,
     cardToDelete,
+    selectedColumnForNewCard,
     searchQuery,
     filterPriority,
     sortBy,

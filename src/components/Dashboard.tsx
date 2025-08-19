@@ -96,6 +96,121 @@ const LoadingSpinner: React.FC<{ message?: string }> = memo(({ message = 'Carreg
 
 LoadingSpinner.displayName = 'LoadingSpinner';
 
+// Memoized Sidebar Section Component
+const SidebarSection: React.FC<{
+  section: typeof dashboardSections[0];
+  isActive: boolean;
+  isCollapsed: boolean;
+  isDark: boolean;
+  onClick: () => void;
+}> = memo(({ section, isActive, isCollapsed, isDark, onClick }) => {
+  const Icon = section.icon;
+  
+  return (
+    <motion.button
+      whileHover={{ x: 2 }}
+      whileTap={{ scale: 0.98 }}
+      onClick={onClick}
+      className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${
+        isActive
+          ? isDark
+            ? 'bg-blue-600 text-white shadow-lg'
+            : 'bg-blue-50 text-blue-600 border border-blue-200'
+          : isDark
+          ? 'text-gray-300 hover:bg-gray-700 hover:text-white'
+          : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+      }`}
+    >
+      <Icon className={`w-5 h-5 flex-shrink-0 ${
+        isActive && !isDark ? 'text-blue-600' : ''
+      }`} />
+      <AnimatePresence>
+        {!isCollapsed && (
+          <motion.div
+            initial={{ opacity: 0, width: 0 }}
+            animate={{ opacity: 1, width: 'auto' }}
+            exit={{ opacity: 0, width: 0 }}
+            transition={{ duration: 0.2 }}
+            className="flex flex-col items-start overflow-hidden"
+          >
+            <span className="font-medium text-sm whitespace-nowrap">
+              {section.label}
+            </span>
+            {section.description && (
+              <span className={`text-xs opacity-75 whitespace-nowrap ${
+                isActive && !isDark ? 'text-blue-500' : isDark ? 'text-gray-400' : 'text-gray-500'
+              }`}>
+                {section.description}
+              </span>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.button>
+  );
+});
+
+SidebarSection.displayName = 'SidebarSection';
+
+// Memoized Notification Item Component
+const NotificationItem: React.FC<{
+  notification: {
+    id: number;
+    title: string;
+    message: string;
+    time: string;
+    type: string;
+    unread: boolean;
+  };
+  isDark: boolean;
+}> = memo(({ notification, isDark }) => {
+  const getNotificationIcon = () => {
+    switch (notification.type) {
+      case 'success': return <CheckCircle className="w-4 h-4 text-green-500" />;
+      case 'warning': return <AlertCircle className="w-4 h-4 text-yellow-500" />;
+      case 'error': return <XCircle className="w-4 h-4 text-red-500" />;
+      default: return <Bell className="w-4 h-4 text-blue-500" />;
+    }
+  };
+
+  return (
+    <motion.div
+      whileHover={{ x: 2 }}
+      className={`p-3 border-b transition-colors duration-200 ${
+        isDark ? 'border-gray-700 hover:bg-gray-700' : 'border-gray-200 hover:bg-gray-50'
+      } ${notification.unread ? 'bg-blue-50/50 dark:bg-blue-900/20' : ''}`}
+    >
+      <div className="flex items-start gap-3">
+        {getNotificationIcon()}
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center justify-between">
+            <h4 className={`text-sm font-medium truncate ${
+              isDark ? 'text-white' : 'text-gray-900'
+            }`}>
+              {notification.title}
+            </h4>
+            {notification.unread && (
+              <div className="w-2 h-2 bg-blue-500 rounded-full flex-shrink-0 ml-2" />
+            )}
+          </div>
+          <p className={`text-xs mt-1 ${
+            isDark ? 'text-gray-400' : 'text-gray-600'
+          }`}>
+            {notification.message}
+          </p>
+          <span className={`text-xs mt-1 ${
+            isDark ? 'text-gray-500' : 'text-gray-500'
+          }`}>
+            {notification.time}
+          </span>
+        </div>
+      </div>
+    </motion.div>
+  );
+});
+
+NotificationItem.displayName = 'NotificationItem';
+
 // Error Boundary Component
 class ErrorBoundary extends React.Component<
   { children: React.ReactNode; fallback?: React.ReactNode },
@@ -155,10 +270,10 @@ const dashboardSections = [
   },
   {
     id: 'kanban',
-    label: 'Kanban',
+    label: 'Fluxo',
     icon: Kanban,
     component: KanbanBoard,
-    description: 'Quadro Kanban para gestão de projetos'
+    description: 'Quadro de Fluxo para gestão de projetos'
   },
   {
     id: 'projects',
@@ -271,21 +386,25 @@ const Dashboard: React.FC = () => {
     ), [searchTerm]
   );
 
-  // Optimized click handlers with useCallback
+  // Optimized click handlers with useCallback - using functional updates
   const handleNotificationToggle = useCallback(() => {
-    setShowNotifications(!showNotifications);
-  }, [showNotifications]);
+    setShowNotifications(prev => !prev);
+  }, []);
 
   const handleUserMenuToggle = useCallback(() => {
-    setShowUserMenu(!showUserMenu);
-  }, [showUserMenu]);
+    setShowUserMenu(prev => !prev);
+  }, []);
 
   const handleSidebarToggle = useCallback(() => {
-    setSidebarCollapsed(!sidebarCollapsed);
-  }, [sidebarCollapsed]);
+    setSidebarCollapsed(prev => !prev);
+  }, []);
 
-  // Mock notifications data
-  const notifications = [
+  const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+  }, []);
+
+  // Mock notifications data - memoized for performance
+  const notifications = React.useMemo(() => [
     {
       id: 1,
       title: 'Nova solicitação de estudo',
@@ -310,9 +429,12 @@ const Dashboard: React.FC = () => {
       type: 'warning',
       unread: false
     }
-  ];
+  ], []);
 
-  const unreadNotifications = notifications.filter(n => n.unread).length;
+  const unreadNotifications = React.useMemo(() => 
+    notifications.filter(n => n.unread).length, 
+    [notifications]
+  );
 
   return (
     <div className={`min-h-screen transition-colors duration-300 ${
@@ -387,7 +509,7 @@ const Dashboard: React.FC = () => {
                   type="text"
                   placeholder="Buscar seções..."
                   value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
+                  onChange={handleSearchChange}
                   className={`w-full pl-10 pr-4 py-2 rounded-lg border text-sm transition-colors duration-300 ${
                     isDark
                       ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400 focus:border-blue-500'
@@ -401,62 +523,16 @@ const Dashboard: React.FC = () => {
 
         {/* Navigation */}
         <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
-          {filteredSections.map((section) => {
-            const Icon = section.icon;
-            const isActive = activeSection === section.id;
-            
-            return (
-              <motion.button
-                key={section.id}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                onClick={() => handleSectionChange(section.id)}
-                className={`w-full flex items-center gap-3 px-3 py-3 rounded-lg text-left transition-all duration-300 ${
-                  isActive
-                    ? isDark
-                      ? 'bg-blue-900/50 text-blue-300 border border-blue-700 shadow-lg'
-                      : 'bg-blue-50 text-blue-700 border border-blue-200 shadow-md'
-                    : isDark
-                      ? 'text-gray-300 hover:bg-gray-700 hover:text-white'
-                      : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
-                }`}
-                title={sidebarCollapsed ? section.label : ''}
-              >
-                <Icon className={`w-5 h-5 flex-shrink-0 ${
-                  isActive ? 'text-current' : 'text-current'
-                }`} />
-                
-                <AnimatePresence>
-                  {!sidebarCollapsed && (
-                    <motion.div
-                      initial={{ opacity: 0, x: -10 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: -10 }}
-                      transition={{ duration: 0.2 }}
-                      className="flex-1 min-w-0"
-                    >
-                      <div className="font-medium truncate">{section.label}</div>
-                      <div className={`text-xs truncate mt-1 ${
-                        isActive
-                          ? isDark ? 'text-blue-200' : 'text-blue-600'
-                          : isDark ? 'text-gray-400' : 'text-gray-500'
-                      }`}>
-                        {section.description}
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-                
-                {isActive && (
-                  <motion.div
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    className="w-2 h-2 bg-current rounded-full flex-shrink-0"
-                  />
-                )}
-              </motion.button>
-            );
-          })}
+          {filteredSections.map((section) => (
+            <SidebarSection
+              key={section.id}
+              section={section}
+              isActive={activeSection === section.id}
+              isCollapsed={sidebarCollapsed}
+              isDark={isDark}
+              onClick={() => handleSectionChange(section.id)}
+            />
+          ))}
         </nav>
 
         {/* User Profile */}
@@ -571,37 +647,11 @@ const Dashboard: React.FC = () => {
                       
                       <div className="max-h-96 overflow-y-auto">
                         {notifications.map((notification) => (
-                          <div
+                          <NotificationItem
                             key={notification.id}
-                            className={`p-4 border-b border-gray-200 dark:border-gray-700 last:border-b-0 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-300 ${
-                              notification.unread ? 'bg-blue-50 dark:bg-blue-900/20' : ''
-                            }`}
-                          >
-                            <div className="flex items-start gap-3">
-                              <div className={`w-2 h-2 rounded-full mt-2 flex-shrink-0 ${
-                                notification.type === 'success' ? 'bg-green-500' :
-                                notification.type === 'warning' ? 'bg-yellow-500' :
-                                notification.type === 'error' ? 'bg-red-500' : 'bg-blue-500'
-                              }`} />
-                              <div className="flex-1 min-w-0">
-                                <h4 className={`font-medium text-sm transition-colors duration-300 ${
-                                  isDark ? 'text-white' : 'text-gray-900'
-                                }`}>
-                                  {notification.title}
-                                </h4>
-                                <p className={`text-sm mt-1 transition-colors duration-300 ${
-                                  isDark ? 'text-gray-400' : 'text-gray-600'
-                                }`}>
-                                  {notification.message}
-                                </p>
-                                <p className={`text-xs mt-2 transition-colors duration-300 ${
-                                  isDark ? 'text-gray-500' : 'text-gray-500'
-                                }`}>
-                                  {notification.time}
-                                </p>
-                              </div>
-                            </div>
-                          </div>
+                            notification={notification}
+                            isDark={isDark}
+                          />
                         ))}
                       </div>
                       

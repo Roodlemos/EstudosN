@@ -32,10 +32,10 @@ const DashboardSEO: React.FC<DashboardSEOProps> = ({
         keywords: 'nexo solicitações, pedidos estudos elétricos, gestão solicitações energia, aprovações projetos'
       },
       kanban: {
-        title: `${baseTitle} - Kanban`,
-        description: 'Quadro Kanban NEXO para gestão visual de projetos elétricos. Organize workflows e acompanhe progresso.',
-        keywords: 'nexo kanban, gestão projetos elétricos, workflow energia, organização estudos'
-      },
+    title: `${baseTitle} - Fluxo`,
+    description: 'Quadro de Fluxo NEXO para gestão visual de projetos elétricos. Organize workflows e acompanhe progresso.',
+    keywords: 'nexo fluxo, gestão projetos elétricos, workflow energia, organização estudos'
+  },
       projects: {
         title: `${baseTitle} - Projetos`,
         description: 'Gestão completa de projetos elétricos no NEXO. Acompanhe cronogramas, recursos e entregas.',
