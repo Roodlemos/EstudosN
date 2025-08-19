@@ -8,8 +8,8 @@ import {
   Eye,
   TrendingUp
 } from 'lucide-react';
-import { useTheme } from '../../context/ThemeContext';
-import { useStudyRequests } from '../../context/StudyRequestContext';
+import { useTheme } from '../../../context/ThemeContext';
+import { useStudyRequests } from '../../../context/StudyRequestContext';
 
 const Requests: React.FC = () => {
   const { isDark } = useTheme();

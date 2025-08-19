@@ -29,7 +29,7 @@ import {
   FileText,
   Settings
 } from 'lucide-react';
-import { useTheme } from '../../context/ThemeContext';
+import { useTheme } from '../../../context/ThemeContext';
 
 interface Project {
   id: number;

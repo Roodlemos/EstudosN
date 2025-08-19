@@ -30,7 +30,7 @@ import {
   Building,
   User
 } from 'lucide-react';
-import { useTheme } from '../../context/ThemeContext';
+import { useTheme } from '../../../context/ThemeContext';
 
 interface Transaction {
   id: number;

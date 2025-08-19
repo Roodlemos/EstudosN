@@ -31,7 +31,7 @@ import {
   Clock,
   CheckCircle
 } from 'lucide-react';
-import { useTheme } from '../../context/ThemeContext';
+import { useTheme } from '../../../context/ThemeContext';
 
 interface Client {
   id: number;

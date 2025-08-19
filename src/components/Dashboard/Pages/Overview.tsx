@@ -16,10 +16,10 @@ import {
   Filter,
   Plus
 } from 'lucide-react';
-import { useTheme } from '../../context/ThemeContext';
-import { useStudyRequests } from '../../context/StudyRequestContext';
-import { cache, CACHE_KEYS, fetchWithCache } from '../../utils/cache';
-import Preloader from '../UI/Preloader';
+import { useTheme } from '../../../context/ThemeContext';
+import { useStudyRequests } from '../../../context/StudyRequestContext';
+import { cache, CACHE_KEYS, fetchWithCache } from '../../../utils/cache';
+import Preloader from '../../UI/Preloader';
 
 const Overview: React.FC = memo(() => {
   const { isDark } = useTheme();

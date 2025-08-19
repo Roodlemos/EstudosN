@@ -514,7 +514,7 @@ import {
   Dalasi as DalasiIcon,
   Leone as LeoneIcon
 } from 'lucide-react';
-import { useTheme } from '../../context/ThemeContext';
+import { useTheme } from '../../../context/ThemeContext';
 
 interface UserProfile {
   id: number;
