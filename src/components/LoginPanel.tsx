@@ -129,7 +129,7 @@ const LoginPanel: React.FC = () => {
           >
             <h3 className="text-sm font-semibold text-blue-800 mb-2">Credenciais de Demonstração:</h3>
             <p className="text-sm text-blue-700">
-              <strong>Email:</strong> estudos@nexoestudos.com.br<br />
+              <strong>Email:</strong> admin@nexoestudos.com.br<br />
               <strong>Senha:</strong> admin123
             </p>
           </motion.div>

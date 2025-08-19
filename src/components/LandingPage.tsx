@@ -842,10 +842,8 @@ Aguardo retorno para agendarmos!`
             <p className="text-gray-400 dark:text-gray-300 mb-4 md:mb-0">
               &copy; 2024. Todos os direitos reservados.
             </p>
-            <div className="flex gap-6 text-gray-400 dark:text-gray-300">
-              <span className="cursor-pointer hover:text-white transition-colors">🇧🇷 PT</span>
-              <span className="cursor-pointer hover:text-white transition-colors">🇺🇸 EN</span>
-              <span className="cursor-pointer hover:text-white transition-colors">🇪🇸 ES</span>
+            <div className="flex items-center">
+              <LanguageSelector />
             </div>
           </div>
         </div>
